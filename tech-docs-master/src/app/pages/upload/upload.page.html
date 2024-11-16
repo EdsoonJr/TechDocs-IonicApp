@@ -5,5 +5,20 @@
 </ion-header>
 
 <ion-content>
+  <ion-item>
+    <ion-label position="stacked">Título</ion-label>
+    <ion-input [(ngModel)]="title" placeholder="Digite o título"></ion-input>
+  </ion-item>
+
+  <ion-item>
+    <ion-label position="stacked">Descrição</ion-label>
+    <ion-textarea [(ngModel)]="description" placeholder="Digite uma breve descrição"></ion-textarea>
+  </ion-item>
+
+  <ion-item>
+    <ion-label position="stacked">Tags (separadas por vírgula)</ion-label>
+    <ion-input [(ngModel)]="tags" placeholder="Ex: programação, Java, TI"></ion-input>
+  </ion-item>
+
   <input type="file" (change)="uploadFile($event)" accept="application/pdf" />
 </ion-content>
