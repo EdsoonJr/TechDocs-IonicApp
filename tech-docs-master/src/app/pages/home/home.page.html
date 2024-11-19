@@ -1,13 +1,102 @@
-<ion-header [translucent]="true">
-  <ion-toolbar>
-    <ion-title>home</ion-title>
-  </ion-toolbar>
-</ion-header>
-
 <ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">home</ion-title>
-    </ion-toolbar>
-  </ion-header>
+  <!-- Header do App -->
+  <ion-card class="ion-no-margin bg-container">
+    <ion-grid>
+      <ion-row class="align-items-center">
+        <!-- Logo do App -->
+        <ion-col size="6">
+          <ion-img src="assets/img/app-logo.png" alt="App Logo"></ion-img>
+        </ion-col>
+
+        <!-- Ícone de Perfil -->
+        <ion-col size="6" class="ion-text-end">
+          <ion-icon
+            name="person-circle-outline"
+            size="large"
+            (click)="goToProfile()"
+          ></ion-icon>
+        </ion-col>
+        <ion-card-title> Bem-Vindo(a)</ion-card-title>
+      </ion-row>
+    </ion-grid>
+  </ion-card>
+
+  <!-- Card Sugerido -->
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title>Sugerido</ion-card-title>
+    </ion-card-header>
+
+    <ion-grid>
+      <ion-row>
+        <!-- Primeira Coluna: Imagem -->
+        <ion-col size="4" class="ion-align-self-center">
+          <ion-thumbnail>
+            <img src="assets/img/sample.png" alt="Imagem Sugerida" />
+          </ion-thumbnail>
+        </ion-col>
+
+        <!-- Segunda Coluna: Conteúdo -->
+        <ion-col size="8">
+          <!-- Linha 1: Título -->
+          <ion-row>
+            <ion-col>
+              <h2>Título</h2>
+            </ion-col>
+          </ion-row>
+
+          <!-- Linha 2: Descrição -->
+          <ion-row>
+            <ion-col>
+              <p>Descrição do item sugerido, com mais detalhes.</p>
+            </ion-col>
+          </ion-row>
+
+          <!-- Linha 3: Estrelas -->
+          <ion-row>
+            <ion-col>
+              <!-- Substitua pelo componente de estrelas que você utiliza -->
+              <ion-icon name="star" color="warning"></ion-icon>
+              <ion-icon name="star" color="warning"></ion-icon>
+              <ion-icon name="star" color="warning"></ion-icon>
+              <ion-icon name="star-outline"></ion-icon>
+              <ion-icon name="star-outline"></ion-icon>
+            </ion-col>
+          </ion-row>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </ion-card>
+
+  <!-- Card Favoritos -->
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title
+        >Favoritos <ion-icon name="star-outline"></ion-icon
+      ></ion-card-title>
+    </ion-card-header>
+
+    <ion-grid>
+      <ion-row>
+        <ion-col size="4" *ngFor="let pdf of favoritePDFs">
+          <ion-card (click)="openPDF(pdf)">
+            <ion-thumbnail>
+              <img [src]="pdf.thumbnailUrl" alt="Thumbnail" />
+            </ion-thumbnail>
+          </ion-card>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+
+    <ion-button fill="clear" (click)="navigateToFavorites()">
+      Ver mais <ion-icon name="chevron-forward-outline"></ion-icon>
+    </ion-button>
+  </ion-card>
+
+  <!-- Botão Flutuante -->
+  <ion-fab vertical="bottom" horizontal="end" slot="fixed">
+    <ion-fab-button [routerLink]="['/log-in']">
+      <ion-icon name="add-outline"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
 </ion-content>
