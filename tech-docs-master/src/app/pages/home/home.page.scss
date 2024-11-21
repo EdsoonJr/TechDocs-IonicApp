@@ -1,16 +1,16 @@
 ion-card {
   margin: 10px;
+  ion-card-title {
+    font-size: 20px;
+    margin-bottom: -20px;
+  }
 }
 
 ion-thumbnail {
   width: 100%;
   height: 150px;
   object-fit: cover;
-}
-
-.bg-container {
-  background-color: transparent;
-  box-shadow: none;
+  max-height: 120px;
 }
 
 ion-img {
@@ -18,6 +18,60 @@ ion-img {
   object-fit: contain;
 }
 
-ion-icon {
-  cursor: pointer;
+.container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 40vh;
+  text-align: center;
+  background-color: transparent;
+  box-shadow: none;
+}
+
+.logo {
+  width: 100px;
+  height: auto;
+  margin-bottom: 20px;
+}
+
+h1 {
+  font-size: 24px;
+  font-weight: bold;
+}
+
+.profile-icon {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  font-size: 32px;
+  color: #000;
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start; /* Alinha pelo topo */
+  gap: 4px; /* Aproxima título, descrição e estrelas */
+}
+
+.title {
+  margin: 0;
+  font-size: 18px;
+  font-weight: bold;
+  line-height: 1.2;
+}
+
+.description {
+  margin: 0;
+  font-size: 14px;
+  color: #666;
+  line-height: 1.4;
+}
+
+.stars {
+  display: flex;
+  align-items: center;
+  gap: 2px; /* Aproxima as estrelas */
+  font-size: 14px;
 }

@@ -1,27 +1,10 @@
 <ion-content [fullscreen]="true">
-  <!-- Header do App -->
-  <ion-card class="ion-no-margin bg-container">
-    <ion-grid>
-      <ion-row class="align-items-center">
-        <!-- Logo do App -->
-        <ion-col size="6">
-          <ion-img src="assets/img/app-logo.png" alt="App Logo"></ion-img>
-        </ion-col>
+  <div class="container">
+    <img src="logo.png" alt="App Logo" class="logo" />
+    <h1>Bem-Vindo(a), usuário</h1>
+  </div>
+  <ion-icon name="person-circle-outline" class="profile-icon"></ion-icon>
 
-        <!-- Ícone de Perfil -->
-        <ion-col size="6" class="ion-text-end">
-          <ion-icon
-            name="person-circle-outline"
-            size="large"
-            (click)="goToProfile()"
-          ></ion-icon>
-        </ion-col>
-        <ion-card-title> Bem-Vindo(a)</ion-card-title>
-      </ion-row>
-    </ion-grid>
-  </ion-card>
-
-  <!-- Card Sugerido -->
   <ion-card>
     <ion-card-header>
       <ion-card-title>Sugerido</ion-card-title>
@@ -29,46 +12,27 @@
 
     <ion-grid>
       <ion-row>
-        <!-- Primeira Coluna: Imagem -->
-        <ion-col size="4" class="ion-align-self-center">
-          <ion-thumbnail>
-            <img src="assets/img/sample.png" alt="Imagem Sugerida" />
+        <ion-col size="4">
+          <ion-thumbnail class="thumbnail">
+            <img src="../../../assets/images/pdf.png" alt="Imagem Sugerida" />
           </ion-thumbnail>
         </ion-col>
-
-        <!-- Segunda Coluna: Conteúdo -->
-        <ion-col size="8">
-          <!-- Linha 1: Título -->
-          <ion-row>
-            <ion-col>
-              <h2>Título</h2>
-            </ion-col>
-          </ion-row>
-
-          <!-- Linha 2: Descrição -->
-          <ion-row>
-            <ion-col>
-              <p>Descrição do item sugerido, com mais detalhes.</p>
-            </ion-col>
-          </ion-row>
-
-          <!-- Linha 3: Estrelas -->
-          <ion-row>
-            <ion-col>
-              <!-- Substitua pelo componente de estrelas que você utiliza -->
-              <ion-icon name="star" color="warning"></ion-icon>
-              <ion-icon name="star" color="warning"></ion-icon>
-              <ion-icon name="star" color="warning"></ion-icon>
-              <ion-icon name="star-outline"></ion-icon>
-              <ion-icon name="star-outline"></ion-icon>
-            </ion-col>
-          </ion-row>
+  
+        <ion-col size="8" class="content">
+          <h2 class="title">Título</h2>
+          <p class="description">Descrição do item sugerido, com mais detalhes.</p>
+          <div class="stars">
+            <ion-icon name="star" color="warning"></ion-icon>
+            <ion-icon name="star" color="warning"></ion-icon>
+            <ion-icon name="star" color="warning"></ion-icon>
+            <ion-icon name="star-outline"></ion-icon>
+            <ion-icon name="star-outline"></ion-icon>
+          </div>
         </ion-col>
       </ion-row>
     </ion-grid>
   </ion-card>
 
-  <!-- Card Favoritos -->
   <ion-card>
     <ion-card-header>
       <ion-card-title
@@ -93,7 +57,6 @@
     </ion-button>
   </ion-card>
 
-  <!-- Botão Flutuante -->
   <ion-fab vertical="bottom" horizontal="end" slot="fixed">
     <ion-fab-button [routerLink]="['/log-in']">
       <ion-icon name="add-outline"></ion-icon>
