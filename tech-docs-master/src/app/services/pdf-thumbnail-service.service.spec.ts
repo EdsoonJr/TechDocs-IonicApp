@@ -1,6 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 
-import { PdfThumbnailService } from './pdf-thumbnail-service.service';
+import { PdfThumbnailService } from './pdf-thumbnail.service';
 
 describe('PdfThumbnailServiceService', () => {
   let service: PdfThumbnailService;

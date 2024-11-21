@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { PdfService } from '../../services/pdf.service';
-import { PdfThumbnailService } from '../../services/pdf-thumbnail-service.service';
+import { PdfThumbnailService } from '../../services/pdf-thumbnail.service';
 import { Pdf } from '../../models/pdfs.model';
 import { Browser } from '@capacitor/browser';
 
