@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { PdfService } from '../../services/pdf.service';
+import { PdfThumbnailService } from '../../services/pdf-thumbnail-service.service';
 import { Pdf } from '../../models/pdfs.model';
 import { Browser } from '@capacitor/browser';
 
@@ -11,16 +12,22 @@ import { Browser } from '@capacitor/browser';
 export class HomePage implements OnInit {
   pdfs: Pdf[] = []; // Array para armazenar os PDFs
 
-  constructor(private pdfService: PdfService) {}
+  constructor(
+    private pdfService: PdfService,
+    private pdfThumbnailService: PdfThumbnailService
+  ) {}
 
   ngOnInit() {
     this.loadPDFs();
   }
 
   // Método para carregar os PDFs
-  loadPDFs() {
+  async loadPDFs() {
     this.pdfService.getPDFs().subscribe({
-      next: (data) => {
+      next: async (data) => {
+        for (const pdf of data) {
+          pdf.thumbnail = await this.pdfThumbnailService.generateThumbnail(pdf.url);
+        }
         this.pdfs = data;
         console.log('PDFs carregados:', this.pdfs);
       },

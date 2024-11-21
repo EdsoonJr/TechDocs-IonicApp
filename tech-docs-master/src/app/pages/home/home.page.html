@@ -9,7 +9,7 @@
     <ion-row>
       <ion-col size="6" *ngFor="let pdf of pdfs">
         <ion-card (click)="openPDF(pdf)">
-          <img [src]="" alt="Miniatura do PDF" />
+          <img [src]="pdf.thumbnail" alt="Miniatura do PDF" />
           <ion-card-header>
             <ion-card-title>{{ pdf.title }}</ion-card-title>
           </ion-card-header>

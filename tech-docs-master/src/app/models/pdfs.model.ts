@@ -10,4 +10,5 @@ export interface Pdf {
   url: string;                // URL gerada pelo Firebase Storage
   download_count: number;     // Número de downloads
   review_count: number;       // Número de avaliações
+  thumbnail?: string;
 }
