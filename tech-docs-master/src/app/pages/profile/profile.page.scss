@@ -1,0 +1,63 @@
+.menu-icon {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  font-size: 32px;
+  color: #000;
+}
+
+.header {
+  text-align: center;
+  margin-top: 80px;
+  .avatar {
+    margin: auto;
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    border: 2px solid var(--ion-color-primary);
+  }
+  h2 {
+    font-size: 24px;
+    font-weight: bold;
+    margin-top: 15px;
+  }
+}
+
+.info-card {
+  margin: 50px 25px 50px 25px;
+  border-radius: 8px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+  p {
+    font-size: 16px;
+    font-weight: 400;
+    color: #000000;
+    margin: 8px 0;
+  }
+}
+
+ion-list {
+  margin: 20px 25px 40px 25px;
+
+  ion-item {
+    font-size: 18px;
+  }
+}
+
+.logout-btn {
+  margin: 0 80px 40px 80px;
+  cursor: pointer;
+  -webkit-transition-duration: 0.4s;
+  transition-duration: 0.4s;
+  ion-button {
+    font-size: 18px;
+    font-weight: 500;
+    --background: var(--ion-color-primary);
+    --background-hover: var(--ion-color-tertiary);
+    --background-activated: var(--ion-color-tertiary);
+    --background-focused: var(--ion-color-tertiary);
+    ion-button:hover {
+      box-shadow: 0 12px 16px 0 rgba(0, 0, 0, 0.24),
+        0 17px 50px 0 rgba(0, 0, 0, 0.19);
+    }
+  }
+}

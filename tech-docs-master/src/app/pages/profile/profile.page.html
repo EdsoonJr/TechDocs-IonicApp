@@ -1,13 +1,44 @@
-<ion-header [translucent]="true">
-  <ion-toolbar>
-    <ion-title>profile</ion-title>
-  </ion-toolbar>
-</ion-header>
-
 <ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">profile</ion-title>
-    </ion-toolbar>
-  </ion-header>
+  <ion-icon name="menu-outline" class="menu-icon"></ion-icon>
+  <div class="header">
+    <ion-avatar class="avatar">
+      <img src="assets/avatar-placeholder.png" alt="Avatar" />
+    </ion-avatar>
+    <h2>Olá, Usuário!</h2>
+  </div>
+
+  <ion-card class="info-card">
+    <ion-card-content>
+      <p>Nome: **************</p>
+      <p>Email: **************</p>
+      <p>Área de Interesse: **************</p>
+    </ion-card-content>
+  </ion-card>
+
+  <ion-list>
+    <ion-item button detail>
+      <ion-icon slot="start" name="cloud-download-outline"></ion-icon>
+      Meus Downloads
+    </ion-item>
+    <ion-item button detail>
+      <ion-icon slot="start" name="cloud-upload-outline"></ion-icon>
+      Meus Uploads
+    </ion-item>
+    <ion-item button detail>
+      <ion-icon slot="start" name="star-outline"></ion-icon>
+      Favoritos
+    </ion-item>
+    <ion-item button detail>
+      <ion-icon slot="start" name="settings-outline"></ion-icon>
+      Configurações
+    </ion-item>
+    <ion-item button detail>
+      <ion-icon slot="start" name="shield-outline"></ion-icon>
+      Políticas de Segurança
+    </ion-item>
+  </ion-list>
+
+  <div class="logout-btn">
+    <ion-button expand="block" size="small" shape="round">Sair</ion-button>
+  </div>
 </ion-content>
