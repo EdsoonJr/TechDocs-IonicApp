@@ -1,13 +1,46 @@
-<ion-header [translucent]="true">
-  <ion-toolbar>
-    <ion-title>folder</ion-title>
-  </ion-toolbar>
-</ion-header>
-
 <ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
+  <ion-header>
     <ion-toolbar>
-      <ion-title size="large">folder</ion-title>
+      <ion-title>Minhas Pastas</ion-title>
+      <ion-icon name="chevron-back-circle-outline" slot="start"></ion-icon>
     </ion-toolbar>
   </ion-header>
+
+  <ion-grid>
+    <ion-row>
+      <ion-col size="4" *ngFor="let folder of folders;let i = index">
+        <ion-card (click)="openFolder(folder)">
+          <ion-thumbnail class="folder-thumbnail">
+            <ion-img
+              class="folder-icon"
+              src="../../../assets/images/folder-icon.png"
+            ></ion-img>
+
+            <img
+              [src]="folder.previewImageUrl"
+              *ngIf="folder.previewImageUrl"
+              alt="Preview PDF"
+            />
+          </ion-thumbnail>
+
+          <ion-card-header>
+            <div class="folder-name">
+              <span *ngIf="!folder.isEditing" (click)="editFolderName(i)">
+                {{ folder.name }}
+              </span>
+
+              <ion-input
+                *ngIf="folder.isEditing"
+                [(ngModel)]="folder.name"
+                (blur)="saveFolderName(i)"
+                autofocus
+                debounce="500"
+                (keyup.enter)="saveFolderName(i)" 
+              ></ion-input>
+            </div>
+          </ion-card-header>
+        </ion-card>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
 </ion-content>
