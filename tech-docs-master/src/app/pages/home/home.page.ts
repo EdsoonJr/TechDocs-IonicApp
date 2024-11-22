@@ -15,7 +15,7 @@ export class HomePage implements OnInit {
   constructor(private router: Router) {}
 
   ngOnInit() {
-    // Aqui você pode carregar os PDFs favoritados a partir da API ou banco de dados.
+   // Carregar os PDFs favoritados a partir da API ou banco de dados.
   }
 
   openPDF(pdf: any) {

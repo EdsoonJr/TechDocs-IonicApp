@@ -51,8 +51,8 @@ h1 {
 .content {
   display: flex;
   flex-direction: column;
-  justify-content: flex-start; /* Alinha pelo topo */
-  gap: 4px; /* Aproxima título, descrição e estrelas */
+  justify-content: flex-start;
+  gap: 4px;
 }
 
 .title {
@@ -72,6 +72,6 @@ h1 {
 .stars {
   display: flex;
   align-items: center;
-  gap: 2px; /* Aproxima as estrelas */
+  gap: 2px;
   font-size: 14px;
 }

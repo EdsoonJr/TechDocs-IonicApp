@@ -1,13 +1,63 @@
-<ion-header [translucent]="true">
-  <ion-toolbar>
-    <ion-title>search</ion-title>
-  </ion-toolbar>
-</ion-header>
-
 <ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">search</ion-title>
-    </ion-toolbar>
-  </ion-header>
+  <ion-icon name="person-circle-outline" class="profile-icon"></ion-icon>
+  <ion-searchbar
+    animated="true"
+    placeholder="Buscar"
+    show-clear-button="focus"
+    search-icon="search-outline"
+    [debounce]="1000"
+    [value]="searchQuery"
+    (ionInput)="handleInput($event)"
+    (ionBlur)="hideResults()"
+    (ionFocus)="showHistory()"
+  ></ion-searchbar>
+
+  <ion-list *ngIf="showList && results.length > 0">
+    <ion-item *ngFor="let result of results" (click)="selectItem(result)">
+      <ion-label>{{ result }}</ion-label>
+    </ion-item>
+  </ion-list>
+
+  <ion-card class="ion-no-margin container">
+    <ion-card-header>
+      <ion-card-title>Pesquise por Categoria</ion-card-title>
+    </ion-card-header>
+
+    <swiper-container
+      class="slide-wrapper ion-padding"
+      (slidechange)="swiperSlideChanged($event)"
+      [loop]="false"
+      [navigation]="true"
+    >
+      <swiper-slide *ngFor="let link of links">
+        <div class="slide-content">
+          <a href="#" (click)="addToSearch($event, link)" class="slide-link">
+            {{ link }}
+          </a>
+        </div>
+      </swiper-slide>
+    </swiper-container>
+  </ion-card>
+
+  <ion-card class="ion-no-margin recents">
+    <ion-card-header>
+      <ion-card-title>Vistos Recentemente</ion-card-title>
+    </ion-card-header>
+
+    <ion-grid>
+      <ion-row>
+        <ion-col size="4" *ngFor="let pdf of favoritePDFs">
+          <ion-card (click)="openPDF(pdf)">
+            <ion-thumbnail>
+              <img [src]="pdf.thumbnailUrl" alt="Thumbnail" />
+            </ion-thumbnail>
+          </ion-card>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+
+    <ion-button fill="clear" (click)="navigateToFavorites()">
+      Ver mais <ion-icon name="chevron-forward-outline"></ion-icon>
+    </ion-button>
+  </ion-card>
 </ion-content>
