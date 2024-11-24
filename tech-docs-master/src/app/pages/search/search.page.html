@@ -1,13 +1,27 @@
-<ion-header [translucent]="true">
+<ion-header>
   <ion-toolbar>
-    <ion-title>search</ion-title>
+    <ion-title>Pesquisar PDFs</ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">search</ion-title>
-    </ion-toolbar>
-  </ion-header>
+<ion-content>
+  <ion-item>
+    <ion-label>Pesquisar em:</ion-label>
+    <ion-select [(ngModel)]="field">
+      <ion-select-option value="title">Título</ion-select-option>
+      <ion-select-option value="tags">Tags</ion-select-option>
+    </ion-select>
+  </ion-item>
+
+  <ion-searchbar color="dark" [(ngModel)]="query" placeholder="Digite sua busca"></ion-searchbar>
+  <ion-button expand="block" (click)="search()">Buscar</ion-button>
+
+  <ion-list>
+    <ion-item *ngFor="let pdf of pdfs">
+      <ion-label>
+        <h2>{{ pdf.title }}</h2>
+        <p>{{ pdf.description }}</p>
+      </ion-label>
+    </ion-item>
+  </ion-list>
 </ion-content>

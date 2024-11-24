@@ -20,7 +20,9 @@ export class PdfService {
       pdf.id = id;
       pdf.upload_date = new Date(); // Usar Timestamp corretamente
 
-      // Salvando no Firestore
+      pdf.title = pdf.title.toLowerCase();
+      pdf.tags = pdf.tags.map(tag => tag.toLowerCase());
+
       await this.firestore.collection(this.collectionName).doc(id).set(pdf);
       console.log('PDF salvo com sucesso!');
     } catch (error) {
@@ -39,4 +41,43 @@ export class PdfService {
       }))
     );
   }
+
+  searchPDFs(query: string, field: 'title' | 'tags'): Observable<Pdf[]> {
+    const lowerQuery = query.toLowerCase();
+  
+    if (field === 'tags') {
+      // Busca exata dentro de arrays (array-contains)
+      return this.firestore.collection<Pdf>(this.collectionName, ref =>
+        ref.where(field, 'array-contains', lowerQuery)
+      ).snapshotChanges().pipe(
+        map(actions => actions.map(a => {
+          const data = a.payload.doc.data() as Pdf;
+          data.id = a.payload.doc.id;
+          return data;
+        }))
+      );
+    } else {
+      // Simula busca flexível para strings com range queries
+      return this.firestore.collection<Pdf>(this.collectionName, ref =>
+        ref.orderBy(field)
+          .startAt(lowerQuery)
+          .endAt(lowerQuery + '\uf8ff') // Limita aos termos que começam com o prefixo
+      ).snapshotChanges().pipe(
+        map(actions => actions.filter(a => {
+          const data = a.payload.doc.data() as Pdf;
+          data.id = a.payload.doc.id;
+  
+          // Aplica filtro manual (simula LIKE %%)
+          return data[field]?.toLowerCase().includes(lowerQuery);
+        }).map(a => {
+          const data = a.payload.doc.data() as Pdf;
+          data.id = a.payload.doc.id;
+          return data;
+        }))
+      );
+    }
+  }
+  
+  
+  
 }
