@@ -1,10 +1,11 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title>Pesquisar PDFs</ion-title>
+    <ion-title>Buscar PDFs</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
+  <!-- Seletor de campo de pesquisa -->
   <ion-item>
     <ion-label>Pesquisar em:</ion-label>
     <ion-select [(ngModel)]="field">
@@ -13,15 +14,30 @@
     </ion-select>
   </ion-item>
 
-  <ion-searchbar color="dark" [(ngModel)]="query" placeholder="Digite sua busca"></ion-searchbar>
+  <!-- Barra de busca -->
+  <ion-searchbar 
+    color="dark" 
+    [(ngModel)]="query" 
+    placeholder="Digite sua busca">
+  </ion-searchbar>
+
+  <!-- Botão de busca -->
   <ion-button expand="block" (click)="search()">Buscar</ion-button>
 
+  <!-- Resultados -->
   <ion-list>
     <ion-item *ngFor="let pdf of pdfs">
+      <ion-thumbnail slot="start">
+        <img *ngIf="pdf.id; else placeholder" [src]="thumbnails[pdf.id]" />
+        <ng-template #placeholder>
+          <img src="assets/placeholder.png" />
+        </ng-template>
+      </ion-thumbnail>
       <ion-label>
         <h2>{{ pdf.title }}</h2>
-        <p>{{ pdf.description }}</p>
+        <p>Tags: {{ pdf.tags.join(', ') }}</p>
       </ion-label>
+      <ion-button slot="end" (click)="openPdf(pdf.url)">Abrir</ion-button>
     </ion-item>
   </ion-list>
 </ion-content>
