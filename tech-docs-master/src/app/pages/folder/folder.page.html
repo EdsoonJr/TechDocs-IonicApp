@@ -11,10 +11,11 @@
       <ion-col size="4" *ngFor="let folder of folders;let i = index">
         <ion-card (click)="openFolder(folder)">
           <ion-thumbnail class="folder-thumbnail">
-            <ion-img
+            <ion-icon
               class="folder-icon"
-              src="../../../assets/images/folder-icon.png"
-            ></ion-img>
+              name="folder-outline"
+              color="tertiary"
+            ></ion-icon>
 
             <img
               [src]="folder.previewImageUrl"
@@ -35,7 +36,7 @@
                 (blur)="saveFolderName(i)"
                 autofocus
                 debounce="500"
-                (keyup.enter)="saveFolderName(i)" 
+                (keyup.enter)="saveFolderName(i)"
               ></ion-input>
             </div>
           </ion-card-header>
