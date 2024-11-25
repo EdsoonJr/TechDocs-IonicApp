@@ -1,6 +1,9 @@
 <ion-content [fullscreen]="true">
+  <ion-img
+    class="background"
+    src="../../../assets/images/header2.svg"
+  ></ion-img>
   <ion-icon name="chevron-back-outline" class="goBack-icon"></ion-icon>
-  <img src="logo.png" alt="App Logo" class="logo" />
 
   <ion-grid>
     <div class="header">
@@ -13,7 +16,7 @@
             <ion-icon
               class="folder-icon"
               name="folder-outline"
-              color="tertiary"
+              color="secondary"
             ></ion-icon>
 
             <img
@@ -45,8 +48,16 @@
   </ion-grid>
 
   <ion-fab vertical="bottom" horizontal="end" slot="fixed">
-    <ion-fab-button [routerLink]="['/log-in']">
-      <ion-icon class="add-icon" name="add-outline"></ion-icon>
-    </ion-fab-button>
+    <div class="tooltip-container">
+      <ion-fab-button>
+        <ion-icon class="add-icon" name="add-outline"></ion-icon>
+      </ion-fab-button>
+      <ion-fab-button class="tooltip1">
+        <ion-icon class="add-icon" name="trash-outline"></ion-icon>
+      </ion-fab-button>
+      <ion-fab-button class="tooltip2">
+        <ion-icon class="add-icon" name="star-outline"></ion-icon>
+      </ion-fab-button>
+    </div>
   </ion-fab>
 </ion-content>

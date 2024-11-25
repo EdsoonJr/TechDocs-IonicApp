@@ -8,7 +8,7 @@ ion-card {
 }
 
 ion-grid {
-  margin-top: 80px;
+  margin-top: -80px;
 }
 
 ion-col {
@@ -79,5 +79,81 @@ ion-icon {
   position: absolute;
   top: 15%;
   left: 50%;
-  transform: translate(-50%,  -50%);
+  transform: translate(-50%, -50%);
+}
+
+.background {
+  opacity: 0.6;
+  width: 100vw;
+}
+
+/* From Uiverse.io by gamerx151 */
+.tooltip-container {
+  position: relative;
+  cursor: pointer;
+  background: transparent;
+  box-shadow: none;
+}
+
+// .tooltip-container .text {
+//   display: flex;
+//   align-items: center;
+//   justify-content: center;
+//   fill: #fff;
+//   transition: all 0.2s;
+// }
+// .tooltip-container:hover .text {
+//   fill: rgb(0, 0, 0);
+//   transition: all 0.9s;
+// }
+
+.tooltip1,
+.tooltip2 {
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  opacity: 0;
+  visibility: hidden;
+  background: #000000;
+  fill: #001722;
+  padding: 10px;
+  border-radius: 50px;
+  transition: opacity 0.3s, visibility 0.3s, top 0.3s, background 0.3s;
+  z-index: 1;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.tooltip-container:hover .tooltip1 {
+  top: -210%;
+  opacity: 1;
+  visibility: visible;
+  background: #fff;
+  border-radius: 50px;
+  transform: translate(-50%, -5px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.tooltip-container:hover .tooltip2 {
+  top: -100%;
+  opacity: 1;
+  visibility: visible;
+  background: #fff;
+  transform: translate(-50%, -5px);
+  border-radius: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.tooltip-container:hover .tooltip1:hover{
+  background: var(--ion-color-tertiary);
+  fill: #fff;
+}
+
+.tooltip-container:hover .tooltip2:hover{
+  background: var(--ion-color-tertiary);
+  fill: #fff;
 }
