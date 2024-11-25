@@ -1,13 +1,13 @@
 <ion-content [fullscreen]="true">
   <div class="container">
     <img src="logo.png" alt="App Logo" class="logo" />
-    <h1>Bem-Vindo(a), usuário</h1>
+    <h1 class="intro">Bem-Vindo(a), usuário</h1>
   </div>
-  <ion-icon name="person-circle-outline" class="profile-icon"></ion-icon>
+  <ion-icon name="menu-outline" class="menu-icon" color="primary"></ion-icon>
 
   <ion-card>
     <ion-card-header>
-      <ion-card-title>Sugerido</ion-card-title>
+      <ion-card-title color="primary">Sugerido</ion-card-title>
     </ion-card-header>
 
     <ion-grid>
@@ -17,10 +17,12 @@
             <img src="../../../assets/images/pdf.png" alt="Imagem Sugerida" />
           </ion-thumbnail>
         </ion-col>
-  
+
         <ion-col size="8" class="content">
-          <h2 class="title">Título</h2>
-          <p class="description">Descrição do item sugerido, com mais detalhes.</p>
+          <h2 class="title" color="primary">Título</h2>
+          <p class="description">
+            Descrição do item sugerido, com mais detalhes.
+          </p>
           <div class="stars">
             <ion-icon name="star" color="warning"></ion-icon>
             <ion-icon name="star" color="warning"></ion-icon>
@@ -35,8 +37,8 @@
 
   <ion-card>
     <ion-card-header>
-      <ion-card-title
-        >Favoritos <ion-icon name="star-outline"></ion-icon
+      <ion-card-title color="primary"
+        >Favoritos <ion-icon name="star-outline" color="primary"></ion-icon
       ></ion-card-title>
     </ion-card-header>
 
@@ -59,7 +61,7 @@
 
   <ion-fab vertical="bottom" horizontal="end" slot="fixed">
     <ion-fab-button [routerLink]="['/log-in']">
-      <ion-icon name="add-outline"></ion-icon>
+      <ion-icon class="add-icon" name="add-outline"></ion-icon>
     </ion-fab-button>
   </ion-fab>
 </ion-content>

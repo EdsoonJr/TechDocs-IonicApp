@@ -1,10 +1,8 @@
 <ion-content [fullscreen]="true">
-  <ion-header>
-    <ion-toolbar>
-      <ion-title>Minhas Pastas</ion-title>
-      <ion-icon name="chevron-back-circle-outline" slot="start"></ion-icon>
-    </ion-toolbar>
-  </ion-header>
+  <ion-icon name="menu-outline" class="menu-icon"></ion-icon>
+  <div class="header">
+    <h2>Minhas Pastas</h2>
+  </div>
 
   <ion-grid>
     <ion-row>
@@ -44,4 +42,10 @@
       </ion-col>
     </ion-row>
   </ion-grid>
+
+  <ion-fab vertical="bottom" horizontal="end" slot="fixed">
+    <ion-fab-button [routerLink]="['/log-in']">
+      <ion-icon class="add-icon" name="add-outline"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
 </ion-content>
