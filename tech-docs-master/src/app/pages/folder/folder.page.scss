@@ -7,6 +7,10 @@ ion-card {
   width: 150px;
 }
 
+ion-grid {
+  margin-top: 80px;
+}
+
 ion-col {
   transform: translateX(-30%);
 }
@@ -46,10 +50,10 @@ ion-card-header {
   }
 }
 
-.menu-icon {
+.goBack-icon {
   position: absolute;
   top: 16px;
-  right: 16px;
+  left: 16px;
   font-size: 32px;
 }
 
@@ -69,4 +73,11 @@ ion-card-header {
 
 ion-icon {
   color: var(--ion-color-primary);
+}
+
+.logo {
+  position: absolute;
+  top: 15%;
+  left: 50%;
+  transform: translate(-50%,  -50%);
 }

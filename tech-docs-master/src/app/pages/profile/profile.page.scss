@@ -6,9 +6,12 @@
 }
 
 .header {
+  position: relative;
   text-align: center;
   margin-top: 80px;
   .avatar {
+    position: relative;
+    z-index: 1;
     margin: auto;
     width: 120px;
     height: 120px;
@@ -20,7 +23,7 @@
   h2 {
     font-size: 24px;
     font-weight: bold;
-    margin-top: 15px;
+    margin-top: 40px;
   }
 }
 
@@ -65,4 +68,22 @@ ion-icon {
         0 17px 50px 0 rgba(0, 0, 0, 0.19);
     }
   }
+}
+
+ion-img:nth-child(1),
+ion-img:nth-child(2) {
+  width: 250px;
+  position: absolute;
+  z-index: -1;
+}
+
+ion-img:nth-child(1) {
+  right: -20px;
+  top: 0;
+}
+
+ion-img:nth-child(2) {
+  left: -120px;
+  top: 80px;
+  transform: scaleX(-1);
 }
