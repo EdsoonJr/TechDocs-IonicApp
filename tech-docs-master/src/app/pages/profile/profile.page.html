@@ -22,7 +22,7 @@
       <ion-icon slot="start" name="cloud-download-outline"></ion-icon>
       Meus Downloads
     </ion-item>
-    <ion-item button detail>
+    <ion-item button detail [routerLink]="['/my-uploads']">
       <ion-icon slot="start" name="cloud-upload-outline"></ion-icon>
       Meus Uploads
     </ion-item>
@@ -33,6 +33,10 @@
     <ion-item button detail>
       <ion-icon slot="start" name="shield-outline"></ion-icon>
       Políticas de Segurança
+    </ion-item>
+    <ion-item button detail>
+      <ion-icon slot="start" name="trash-outline"></ion-icon>
+      Lixeira
     </ion-item>
   </ion-list>
 
