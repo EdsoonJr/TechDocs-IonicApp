@@ -44,7 +44,7 @@ ion-input {
 ion-card-header {
   margin-top: -20px;
   span {
-    color: var(--ion-color-primary);
+    color: #000000;
     font-weight: 500;
     font-size: 16px;
   }
@@ -67,7 +67,7 @@ ion-card-header {
   }
 }
 
-.add-icon {
+.add-icon, .trash-icon, .star-icon {
   color: #ffff;
 }
 
@@ -87,25 +87,12 @@ ion-icon {
   width: 100vw;
 }
 
-/* From Uiverse.io by gamerx151 */
 .tooltip-container {
   position: relative;
   cursor: pointer;
   background: transparent;
   box-shadow: none;
 }
-
-// .tooltip-container .text {
-//   display: flex;
-//   align-items: center;
-//   justify-content: center;
-//   fill: #fff;
-//   transition: all 0.2s;
-// }
-// .tooltip-container:hover .text {
-//   fill: rgb(0, 0, 0);
-//   transition: all 0.9s;
-// }
 
 .tooltip1,
 .tooltip2 {
