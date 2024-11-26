@@ -1,9 +1,9 @@
-ion-header {
-  position: absolute;
-}
-
 ion-item {
   margin-bottom: 16px;
+}
+
+ion-item:nth-child(1) {
+  margin-top: 60px;
 }
 
 ion-input {
@@ -17,28 +17,8 @@ ion-card {
   box-shadow: none;
 }
 
-ion-card-title {
-  text-align: center;
-  font-size: 28px;
-  margin-top: 20px;
+ion-icon {
   color: var(--ion-color-primary);
-}
-
-.signup-link {
-  display: flex;
-  margin: auto;
-  flex-direction: row;
-  align-content: center;
-  position: absolute;
-  justify-content: center;
-  left: 0;
-  bottom: 40px;
-  right: 0;
-  width: 80%;
-  p {
-    font-size: 0.9rem;
-    color: #000000;
-  }
 }
 
 .forgot-password {
@@ -66,11 +46,15 @@ ion-card-title {
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-top: 50px;
+  margin-top: 100px;
+  ion-img {
+    width: 80px;
+    height: 80px;
+  }
 }
 
 .text-tag {
-  margin-top: 50px;
+  margin-top: 30px;
   margin-bottom: 10px;
   text-align: center;
   span {
@@ -82,4 +66,15 @@ ion-card-title {
 
 .google-btn {
   text-align: center;
+}
+
+.links-wrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  p {
+    font-size: 0.9rem;
+    color: #000000;
+  }
 }

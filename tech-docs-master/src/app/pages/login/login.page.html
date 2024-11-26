@@ -1,14 +1,8 @@
 <ion-content [fullscreen]="true">
   <ion-card class="ion-no-margin">
     <div class="img-wrapper">
-      <ion-img
-        src="../../../assets/images/user.svg"
-        style="width: 200px; height: 200px"
-      ></ion-img>
+      <ion-img src="../../../assets/images/user.svg"></ion-img>
     </div>
-    <ion-card-header>
-      <ion-card-title> Login</ion-card-title>
-    </ion-card-header>
   </ion-card>
 
   <form
@@ -26,9 +20,7 @@
         <ion-icon name="mail-outline"></ion-icon>
       </ion-item>
 
-      <div *ngIf="authError" class="error_message">
-        {{ authError }}
-      </div>
+      <div *ngIf="authError" class="error_message">{{ authError }}</div>
 
       <div>
         <ng-container *ngFor="let validation of validationUserMessage.email">
@@ -51,7 +43,6 @@
         <ion-icon name="lock-closed-outline"></ion-icon>
       </ion-item>
 
-     
       <div>
         <ng-container *ngFor="let validation of validationUserMessage.password">
           <div
@@ -67,7 +58,7 @@
         <a [routerLink]="['/reset-password']">Esqueceu a senha?</a>
       </div>
     </div>
-  
+
     <div class="login-btn">
       <ion-button
         size="small"
@@ -81,20 +72,22 @@
     </div>
   </form>
 
-  <div class="text-tag">
-    <span>Ou</span>
-  </div>
-  <div class="google-btn">
-    <ion-button fill="clear" class="ion-no-padding">
-      <ion-img
-        src="../../../assets/images/google.png"
-        style="width: 40px; height: 40px"
-      ></ion-img>
-    </ion-button>
-  </div>
-  <div class="signup-link">
-    <p>
-      Novo aqui no TechDocs?<a [routerLink]="['/sign-up']"> Cadastre-se!</a>
-    </p>
-  </div>
+  <ion-card class="ion-no-margin links-wrapper">
+    <div class="text-tag">
+      <span>Ou</span>
+    </div>
+    <div class="google-btn">
+      <ion-button fill="clear" class="ion-no-padding">
+        <ion-img
+          src="../../../assets/images/google.png"
+          style="width: 40px; height: 40px"
+        ></ion-img>
+      </ion-button>
+    </div>
+    <div>
+      <p>
+        Novo aqui no TechDocs?<a [routerLink]="['/sign-up']"> Cadastre-se!</a>
+      </p>
+    </div>
+  </ion-card>
 </ion-content>

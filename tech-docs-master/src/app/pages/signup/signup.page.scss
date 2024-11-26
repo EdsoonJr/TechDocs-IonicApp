@@ -1,81 +1,75 @@
 ion-header {
-    position: absolute;
+  position: absolute;
 }
 
 ion-card {
-    --ion-background-color: transparent;
-    box-shadow: none;
+  --ion-background-color: transparent;
+  box-shadow: none;
 }
 
 ion-card-title {
-    text-align: center;
-    font-size: 28px;
-    margin-top: 20px;
-    color: var(--ion-color-primary);
+  text-align: center;
+  font-size: 28px;
+  margin-top: 20px;
+  color: var(--ion-color-primary);
 }
 
 ion-item {
-    margin-bottom: 16px;
+  margin-bottom: 16px;
 }
 
 ion-input {
-    font-size: 18px;
-    font-weight: 500;
-    color: #000000;
-    
+  font-size: 18px;
+  font-weight: 500;
+  color: #000000;
 }
 
-.login-link {
-    display: flex;
-    margin: auto;
-    flex-direction: row;
-    align-content: center;
-    position: absolute;
-    justify-content: center;
-    left: 0;
-    bottom: -20px;
-    right: 0;
-    width: 80%;
-    font-weight: 500;
-    p{
-        font-size: 0.9rem;
-        color: #000000;
-    }
-    
+ion-icon {
+  color: var(--ion-color-primary);
 }
 
 .signup-btn {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    
-    ion-button {
-        color: var(--ion-color-primary);
-        font-size: 18px;
-        font-weight: 600;
-        width: 200px;
-    }
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  ion-button {
+    color: var(--ion-color-primary);
+    font-size: 18px;
+    font-weight: 600;
+    width: 200px;
+  }
 }
 
 .input-container {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
 
-
 .text-tag {
-    margin-top: 70px;
-    margin-bottom: 10px;
-    text-align: center;
-    span {
-        font-size: 16px;
-        font-weight: 100;
-        color: #000000;
-    }
+  margin-top: 30px;
+  margin-bottom: 10px;
+  text-align: center;
+  span {
+    font-size: 16px;
+    font-weight: 100;
+    color: #000000;
+  }
 }
 
 .google-btn {
-    text-align: center;
+  text-align: center;
+}
+
+.links-wrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  p {
+    font-size: 0.9rem;
+    color: #000000;
+  }
 }
