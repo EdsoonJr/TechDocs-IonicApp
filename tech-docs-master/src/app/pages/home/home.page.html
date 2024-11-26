@@ -8,13 +8,22 @@
   <ion-grid>
     <ion-row>
       <ion-col size="6" *ngFor="let pdf of pdfs">
-        <ion-card (click)="openPDF(pdf)">
+        <ion-card>
           <img [src]="pdf.thumbnail" alt="Miniatura do PDF" />
           <ion-card-header>
             <ion-card-title>{{ pdf.title }}</ion-card-title>
           </ion-card-header>
           <ion-card-content>
             <p>{{ pdf.description }}</p>
+            <!-- Botão minimalista -->
+            <ion-button 
+              fill="clear" 
+              color="primary" 
+              size="small" 
+              (click)="addToFolder(pdf)"
+              style="margin-left: auto; display: block; margin-top: 10px;">
+              <ion-icon name="add-circle-outline"></ion-icon>
+            </ion-button>
           </ion-card-content>
         </ion-card>
       </ion-col>

@@ -30,6 +30,10 @@ const routes: Routes = [
     path: 'upload',
     loadChildren: () => import('./pages/upload/upload.module').then( m => m.UploadPageModule)
   },
+  {
+    path: 'add-to-folder',
+    loadChildren: () => import('./pages/add-to-folder/add-to-folder.module').then( m => m.AddToFolderPageModule)
+  },
 
 ];
 

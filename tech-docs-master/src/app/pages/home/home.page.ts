@@ -3,6 +3,8 @@ import { PdfService } from '../../services/pdf.service';
 import { PdfThumbnailService } from '../../services/pdf-thumbnail.service';
 import { Pdf } from '../../models/pdfs.model';
 import { Browser } from '@capacitor/browser';
+import { ModalController } from '@ionic/angular'; // Importar ModalController
+import { AddToFolderPage } from '../add-to-folder/add-to-folder.page'; // Importar o modal
 
 @Component({
   selector: 'app-home',
@@ -14,7 +16,8 @@ export class HomePage implements OnInit {
 
   constructor(
     private pdfService: PdfService,
-    private pdfThumbnailService: PdfThumbnailService
+    private pdfThumbnailService: PdfThumbnailService,
+    private modalController: ModalController // Adicionar o ModalController
   ) {}
 
   ngOnInit() {
@@ -44,5 +47,14 @@ export class HomePage implements OnInit {
     } catch (error) {
       console.error('Erro ao abrir o PDF:', error);
     }
+  }
+
+  // Método para abrir o modal de adicionar à pasta
+  async addToFolder(pdf: Pdf) {
+    const modal = await this.modalController.create({
+      component: AddToFolderPage,
+      componentProps: { pdf }, // Passa o PDF para o modal
+    });
+    await modal.present();
   }
 }
