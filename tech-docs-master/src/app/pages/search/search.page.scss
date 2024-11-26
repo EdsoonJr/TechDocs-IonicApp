@@ -43,8 +43,16 @@ h3 {
   top: 16px;
   right: 16px;
   font-size: 32px;
-  color: #000;
   z-index: 999;
+}
+
+.goPrev-icon {
+  position: absolute;
+  top: 16px;
+  left: 16px;
+  font-size: 32px;
+  z-index: 999;
+  color: var(--ion-color-primary);
 }
 
 .container {
