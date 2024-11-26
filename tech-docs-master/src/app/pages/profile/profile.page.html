@@ -18,21 +18,35 @@
   </ion-card>
 
   <ion-list>
-    <ion-item button detail>
+    <ion-item button detail (click)="openModal('downloads')">
       <ion-icon slot="start" name="cloud-download-outline"></ion-icon>
       Meus Downloads
     </ion-item>
 
-    <ion-item button detail (click)="openModal()">
+    <ion-item button detail (click)="openModal('uploads')">
       <ion-icon slot="start" name="cloud-download-outline"></ion-icon>
       Meus Uploads
     </ion-item>
 
+    <ion-item button detail (click)="openModal('favoritos')">
+      <ion-icon slot="start" name="star-outline"></ion-icon>
+      Favoritos
+    </ion-item>
+    <ion-item button detail (click)="openModal('lixeira')">
+      <ion-icon slot="start" name="trash-outline"></ion-icon>
+      Lixeira
+    </ion-item>
+    <ion-item button detail>
+      <ion-icon slot="start" name="shield-outline"></ion-icon>
+      Políticas de Segurança
+    </ion-item>
     <ion-modal [isOpen]="isModalOpen" (didDismiss)="closeModal()">
       <ng-template>
         <ion-header>
           <ion-buttons slot="start">
-            <ion-button (click)="closeModal()"><ion-icon name="close-outline" class="close-icon" /></ion-button>
+            <ion-button (click)="closeModal()"
+              ><ion-icon name="close-outline" class="close-icon"
+            /></ion-button>
           </ion-buttons>
         </ion-header>
         <ion-content [fullscreen]="true">
@@ -40,9 +54,9 @@
             class="modal-background"
             src="../../../assets/images/header2.svg"
           ></ion-img>
-  
+
           <div class="modal-header">
-            <h2>Meus Uploads</h2>
+            <h2>{{ modalTitle }}</h2>
           </div>
 
           <ion-card class="modal-container modal-ion-card">
@@ -64,19 +78,6 @@
         </ion-content>
       </ng-template>
     </ion-modal>
-
-    <ion-item button detail>
-      <ion-icon slot="start" name="star-outline"></ion-icon>
-      Favoritos
-    </ion-item>
-    <ion-item button detail>
-      <ion-icon slot="start" name="shield-outline"></ion-icon>
-      Políticas de Segurança
-    </ion-item>
-    <ion-item button detail>
-      <ion-icon slot="start" name="trash-outline"></ion-icon>
-      Lixeira
-    </ion-item>
   </ion-list>
 
   <div class="logout-btn">

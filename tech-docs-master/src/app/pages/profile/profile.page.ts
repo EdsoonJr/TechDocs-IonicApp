@@ -9,7 +9,7 @@ import { IonModal, ToastController } from "@ionic/angular";
 export class ProfilePage implements OnInit {
   @ViewChild(IonModal) modal!: IonModal;
   isModalOpen: boolean = false;
-
+  modalTitle = "";
   myUploadedPDFs = [
     {
       id: 1,
@@ -39,8 +39,17 @@ export class ProfilePage implements OnInit {
 
   constructor(private toastController: ToastController) {}
 
-  openModal() {
+  openModal(contentType: string) {
     this.isModalOpen = true;
+    if (contentType === "downloads") {
+      this.modalTitle = "Meus Downloads";
+    } else if (contentType === "uploads") {
+      this.modalTitle = "Meus Uploads";
+    } else if (contentType === "favoritos") {
+      this.modalTitle = "Favoritos";
+    } else if (contentType === "lixeira") {
+      this.modalTitle = "Lixeira";
+    }
   }
 
   closeModal() {
