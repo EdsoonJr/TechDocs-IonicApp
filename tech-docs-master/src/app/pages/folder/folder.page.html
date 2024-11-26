@@ -28,18 +28,7 @@
 
           <ion-card-header>
             <div class="folder-name">
-              <span *ngIf="!folder.isEditing" (click)="editFolderName(i)">
-                {{ folder.name }}
-              </span>
-
-              <ion-input
-                *ngIf="folder.isEditing"
-                [(ngModel)]="folder.name"
-                (blur)="saveFolderName(i)"
-                autofocus
-                debounce="500"
-                (keyup.enter)="saveFolderName(i)"
-              ></ion-input>
+              <span> {{ folder.name }} </span>
             </div>
           </ion-card-header>
         </ion-card>

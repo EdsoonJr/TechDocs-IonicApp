@@ -6,11 +6,10 @@ import { Component, OnInit } from "@angular/core";
   styleUrls: ["./folder.page.scss"],
 })
 export class FolderPage implements OnInit {
-  // Exemplo de dados das pastas
   public folders = [
     {
       name: "Engenharia",
-      previewImageUrl: "assets/img/preview-pdf-engenharia.png", // Miniatura do PDF
+      previewImageUrl: "assets/img/preview-pdf-engenharia.png", 
       pdfs: ["pdf1.pdf", "pdf2.pdf"],
       isEditing: false,
     },
@@ -27,14 +26,6 @@ export class FolderPage implements OnInit {
       isEditing: false,
     },
   ];
-
-  editFolderName(index: number) {
-    this.folders[index].isEditing = true;
-  }
-
-  saveFolderName(index: number) {
-    this.folders[index].isEditing = false;
-  }
 
   openFolder(folder: any) {
     console.log("Abrindo pasta:", folder.name);
