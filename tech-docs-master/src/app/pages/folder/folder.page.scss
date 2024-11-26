@@ -67,7 +67,9 @@ ion-card-header {
   }
 }
 
-.add-icon, .trash-icon, .star-icon {
+.add-icon,
+.trash-icon,
+.star-icon {
   color: #ffff;
 }
 
@@ -95,7 +97,8 @@ ion-icon {
 }
 
 .tooltip1,
-.tooltip2 {
+.tooltip2,
+.tooltip3 {
   position: absolute;
   top: 100%;
   left: 50%;
@@ -112,19 +115,20 @@ ion-icon {
 }
 
 .tooltip-container:hover .tooltip1 {
-  top: -210%;
+  top: -58px;
   opacity: 1;
   visibility: visible;
   background: #fff;
-  border-radius: 50px;
   transform: translate(-50%, -5px);
   display: flex;
   align-items: center;
   justify-content: center;
+  z-index: 3;
 }
 
 .tooltip-container:hover .tooltip2 {
-  top: -100%;
+  top: -80%;
+  left: -30%;
   opacity: 1;
   visibility: visible;
   background: #fff;
@@ -133,14 +137,33 @@ ion-icon {
   display: flex;
   align-items: center;
   justify-content: center;
+  z-index: 2;
 }
 
-.tooltip-container:hover .tooltip1:hover{
+.tooltip-container:hover .tooltip3 {
+  left: -60%;
+  top: 5px;
+  opacity: 1;
+  visibility: visible;
+  background: #fff;
+  transform: translate(-50%, -5px);
+  border-radius: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1;
+}
+
+.tooltip-container:hover .tooltip1:hover {
   background: var(--ion-color-tertiary);
   fill: #fff;
 }
 
-.tooltip-container:hover .tooltip2:hover{
+.tooltip-container:hover .tooltip2:hover {
+  background: var(--ion-color-tertiary);
+  fill: #fff;
+}
+.tooltip-container:hover .tooltip3:hover {
   background: var(--ion-color-tertiary);
   fill: #fff;
 }
