@@ -1,6 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { ModalController, AlertController } from '@ionic/angular';
-import { FolderService } from '../../services/folderservice.service';
+import { FolderService } from '../../services/folder.service';
 import { Pdf } from '../../models/pdfs.model';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
 
