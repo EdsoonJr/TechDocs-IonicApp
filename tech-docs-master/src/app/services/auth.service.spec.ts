@@ -3,7 +3,7 @@ import { AuthService } from './auth.service';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 
-fdescribe('AuthService', () => {
+describe('AuthService', () => {
   let service: AuthService;
   let mockAngularFireAuth: any;
   let mockAngularFirestore: any;
@@ -40,7 +40,7 @@ fdescribe('AuthService', () => {
     console.log('AuthService foi criado com sucesso.');
   });
 
-  fdescribe('#loginFireAuth', () => {
+  describe('#loginFireAuth', () => {
     it('should resolve when login is successful', async () => {
       const loginData = { email: 'test@example.com', password: 'password123' };
       mockAngularFireAuth.signInWithEmailAndPassword.and.returnValue(Promise.resolve('Success'));
@@ -70,7 +70,7 @@ fdescribe('AuthService', () => {
     });
   });
 
-  fdescribe('#registerFireAuth', () => {
+  describe('#registerFireAuth', () => {
     it('should resolve when registration is successful', async () => {
       const registerData = {
         email: 'test@example.com',
