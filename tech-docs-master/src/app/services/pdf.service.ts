@@ -92,4 +92,11 @@ export class PdfService {
       );
     }
   }
+  updatePdf(pdf: Pdf) {
+    return this.firestore.collection('pdfs').doc(pdf.id).update({
+      review_count: pdf.review_count,
+      // Outros campos que precisam ser atualizados podem ser adicionados aqui
+    });
+  }
+  
 }

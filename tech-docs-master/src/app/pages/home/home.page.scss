@@ -1,0 +1,24 @@
+// .stars {
+//     display: inline;
+   
+//   }
+  
+  .star-icon {
+    font-size: 24px;  /* Tamanho das estrelas */
+    margin-right: 4px;  /* Espaçamento entre as estrelas */
+    cursor: pointer;  /* Muda o cursor para mãozinha ao passar o mouse */
+    color: gold;
+  }
+  
+  .star-icon:hover {
+    color: gold;  /* Cor das estrelas quando o usuário passa o mouse */
+  }
+  
+  .stars ion-icon {
+    transition: color 0.3s ease-in-out;
+  }
+  
+  .star-icon.active {
+    color: gold;  /* Cor das estrelas ativas */
+  }
+  

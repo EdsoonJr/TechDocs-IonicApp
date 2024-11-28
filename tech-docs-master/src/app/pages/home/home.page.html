@@ -15,6 +15,21 @@
           </ion-card-header>
           <ion-card-content>
             <p>{{ pdf.description }}</p>
+
+            <!-- Avaliação com estrelas -->
+            <ion-item>
+              <div class="stars">
+                <ion-icon
+                  *ngFor="let star of [1, 2, 3, 4, 5]"
+                  [name]="star <= (pdf.userRating ?? 0) ? 'star' : 'star-outline'"
+                  (click)="onRatingChange(pdf.id, star)"
+                  class="star-icon">
+                </ion-icon>
+              </div>
+            </ion-item>
+
+            <p>Média de avaliações: {{ pdf.rating | number: '1.1-1' }}</p>
+
             <!-- Botão minimalista -->
             <ion-button 
               fill="clear" 

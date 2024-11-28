@@ -11,4 +11,6 @@ export interface Pdf {
   download_count: number;     // Número de downloads
   review_count: number;       // Número de avaliações
   thumbnail?: string;
+  rating?: number; // Média das avaliações (1 a 5)
+  userRating?: number; // Avaliação do usuário logado (1 a 5)
 }
