@@ -4,7 +4,6 @@ import { Pdf } from '../models/pdfs.model'; // Certifique-se de ajustar o caminh
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
-
 @Injectable({
   providedIn: 'root',
 })
@@ -42,6 +41,22 @@ export class PdfService {
     );
   }
 
+  // Método para buscar um PDF pelo ID
+  async getPdfById(pdfId: string): Promise<Pdf | undefined> {
+    try {
+      const docRef = this.firestore.collection(this.collectionName).doc(pdfId);
+      const doc = await docRef.get().toPromise();
+      if (doc && doc.exists) {
+        return doc.data() as Pdf;
+      } else {
+        return undefined;
+      }
+    } catch (error) {
+      console.error('Erro ao buscar PDF pelo ID:', error);
+      return undefined;
+    }
+  }
+
   searchPDFs(query: string, field: 'title' | 'tags'): Observable<Pdf[]> {
     const lowerQuery = query.toLowerCase();
   
@@ -77,7 +92,4 @@ export class PdfService {
       );
     }
   }
-  
-  
-  
 }
