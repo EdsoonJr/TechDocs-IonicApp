@@ -30,15 +30,26 @@
 
             <p>Média de avaliações: {{ pdf.rating | number: '1.1-1' }}</p>
 
-            <!-- Botão minimalista -->
-            <ion-button 
-              fill="clear" 
-              color="primary" 
-              size="small" 
-              (click)="addToFolder(pdf)"
-              style="margin-left: auto; display: block; margin-top: 10px;">
-              <ion-icon name="add-circle-outline"></ion-icon>
-            </ion-button>
+            <!-- Botões minimalistas lado a lado -->
+            <div style="display: flex; justify-content: space-between; margin-top: 10px;">
+              <!-- Botão Add to Folder -->
+              <ion-button 
+                fill="clear" 
+                color="primary" 
+                size="small" 
+                (click)="addToFolder(pdf)">
+                <ion-icon name="add-circle-outline"></ion-icon>
+              </ion-button>
+
+              <!-- Botão Download -->
+              <ion-button 
+                fill="clear" 
+                color="primary" 
+                size="small" 
+                (click)="downloadPDF(pdf)">
+                <ion-icon name="download-outline"></ion-icon>
+              </ion-button>
+            </div>
           </ion-card-content>
         </ion-card>
       </ion-col>

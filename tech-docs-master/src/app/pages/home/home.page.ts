@@ -7,6 +7,7 @@ import { ModalController } from '@ionic/angular'; // Importar ModalController
 import { AddToFolderPage } from '../add-to-folder/add-to-folder.page'; // Importar o modal
 import { ReviewService } from '../../services/review.service';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
+import { Filesystem, Directory } from '@capacitor/filesystem'; // Importando Filesystem para download
 
 @Component({
   selector: 'app-home',
@@ -52,6 +53,7 @@ export class HomePage implements OnInit {
       },
     });
   }
+
   // Atualizar a avaliação ao clicar nas estrelas
   async onRatingChange(pdfId: string | undefined, newRating: number) {
     if (!pdfId) {
@@ -88,6 +90,51 @@ export class HomePage implements OnInit {
       console.error('Erro ao salvar avaliação:', error);
     }
   }
+
+  // Método para fazer o download do PDF
+  async downloadPDF(pdf: Pdf) {
+    try {
+      const url = pdf.url;
+      const fileName = `${pdf.title}.pdf`; // Nome do arquivo com a extensão .pdf
+      //mobile donload
+  //     const response = await fetch(url);
+  //     const blob = await response.blob();
+  //     const file = new File([blob], fileName, { type: 'application/pdf' });
+
+  //     // Salvar o arquivo no dispositivo
+  //     const savedFile = await Filesystem.writeFile({
+  //       path: `downloads/${fileName}`,
+  //       data: blob,
+  //       directory: Directory.Documents, // Usando o enum Directory para especificar o diretório correto
+  //     });
+
+  //     console.log('PDF salvo com sucesso:', savedFile.uri);
+  //     alert('PDF baixado com sucesso!');
+  //   } catch (error) {
+  //     console.error('Erro ao baixar o PDF:', error);
+  //     alert('Erro ao baixar o PDF. Tente novamente.');
+  //   }
+  // }
+      // Baixar o arquivo usando fetch e a API Blob
+      const response = await fetch(url);
+      const blob = await response.blob();
+      
+      // Criar um link de download temporário
+      const link = document.createElement('a');
+      const objectUrl = URL.createObjectURL(blob);
+      link.href = objectUrl;
+      link.download = fileName;
+      link.click();
+      
+      console.log('PDF pronto para download:', fileName);
+      alert('PDF baixado com sucesso!');
+    } catch (error) {
+      console.error('Erro ao baixar o PDF:', error);
+      alert('Erro ao baixar o PDF. Tente novamente.');
+    }
+  }
+  
+
   // Método para abrir o PDF
   async openPDF(pdf: Pdf) {
     try {
@@ -96,6 +143,7 @@ export class HomePage implements OnInit {
       console.error('Erro ao abrir o PDF:', error);
     }
   }
+
   // Método para abrir o modal de adicionar à pasta
   async addToFolder(pdf: Pdf) {
     const modal = await this.modalController.create({
