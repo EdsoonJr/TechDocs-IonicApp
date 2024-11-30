@@ -31,6 +31,11 @@ ion-button {
   text-align: center;
   background-color: transparent;
   box-shadow: none;
+  h1 {
+    color: var(--ion-color-primary);
+    font-size: 24px;
+    font-weight: 500;
+  }
 }
 
 .logo {
@@ -73,12 +78,6 @@ ion-button {
   align-items: center;
   gap: 2px;
   font-size: 14px;
-}
-
-.intro {
-  color: var(--ion-color-primary);
-  font-size: 24px;
-  font-weight: 500;
 }
 
 .add-icon {
