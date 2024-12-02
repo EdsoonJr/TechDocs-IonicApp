@@ -55,7 +55,14 @@
       </div>
 
       <div class="forgot-password ion-padding">
-        <a [routerLink]="['/reset-password']">Esqueceu a senha?</a>
+        <p id="open-forgetpass">Esqueceu sua senha?</p>
+        <ion-alert
+          trigger="open-forgetpass"
+          header="Por favor, insira seu email"
+          id="reset-password-alert"
+          [buttons]="alertButtons"
+          [inputs]="alertInputs"
+        ></ion-alert>
       </div>
     </div>
 

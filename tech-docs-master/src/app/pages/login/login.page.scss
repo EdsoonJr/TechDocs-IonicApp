@@ -24,9 +24,11 @@ ion-icon {
 .forgot-password {
   display: flex;
   justify-content: flex-start;
-  margin-top: -10px;
-  a {
+  margin-top: -25px;
+  p {
     font-size: 0.8rem;
+    color: var(--ion-color-secondary);
+    font-weight: 500;
   }
 }
 
