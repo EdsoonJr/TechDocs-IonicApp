@@ -83,3 +83,16 @@ ion-button {
 .add-icon {
   color: #ffff;
 }
+
+.send-btn {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 80px;
+  ion-button {
+    color: var(--ion-color-primary);
+    font-size: 18px;
+    font-weight: 600;
+    width: 200px;
+  }
+}

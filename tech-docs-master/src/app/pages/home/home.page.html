@@ -1,6 +1,6 @@
 <ion-content [fullscreen]="true">
   <div class="container">
-    <img src="../../../assets/images/app-logo.svg" alt="App Logo"/>
+    <img src="../../../assets/images/app-logo.svg" alt="App Logo" />
     <h1>Bem-Vindo(a), usuário</h1>
   </div>
   <a
@@ -69,14 +69,11 @@
           <ion-header>
             <ion-toolbar>
               <ion-buttons slot="start">
-                <ion-button (click)="cancel()"><ion-icon name="close-outline" /></ion-button>
+                <ion-button (click)="cancel()"
+                  ><ion-icon name="close-outline"
+                /></ion-button>
               </ion-buttons>
               <ion-title>Upload de PDF</ion-title>
-              <ion-buttons slot="end">
-                <ion-button (click)="confirm()"
-                  ><ion-icon name="checkmark-outline" /></ion-button
-                >
-              </ion-buttons>
             </ion-toolbar>
           </ion-header>
           <ion-content class="ion-padding">
@@ -117,6 +114,17 @@
                 reconheço minha responsabilidade ao fazer o upload deste PDF.
               </ion-label>
             </ion-item>
+            <div class="send-btn">
+              <ion-button
+                size="small"
+                fill="outline"
+                shape="round"
+                type="submit"
+                (click)="sendPdf()"
+              >
+                Enviar
+              </ion-button>
+            </div>
           </ion-content>
         </ng-template>
       </ion-modal>

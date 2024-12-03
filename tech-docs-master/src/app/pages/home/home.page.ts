@@ -29,7 +29,7 @@ export class HomePage implements OnInit {
     this.modal.dismiss(null, "cancel");
   }
 
-  confirm() {
+  sendPdf() {
     if (this.selectedFile && this.acceptTerms) {
       const data = {
         title: this.title,
