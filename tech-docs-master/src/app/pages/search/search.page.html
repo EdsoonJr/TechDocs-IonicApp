@@ -1,62 +1,87 @@
+<ion-header>
+</ion-header>
+
 <ion-content [fullscreen]="true">
-  <a><ion-icon name="chevron-back-outline" class="goPrev-icon"></ion-icon></a>
-  <a
-    ><ion-icon name="menu-outline" class="menu-icon" color="primary"></ion-icon
-  ></a>
-  <ion-img
-    class="background"
-    src="../../../assets/images/header2.svg"
-  ></ion-img>
+  <!-- Ícones de navegação -->
+  <div class="header-icons">
+    <ion-icon name="chevron-back-outline" class="goPrev-icon" (click)="back()"></ion-icon>
+    <ion-icon name="menu-outline" class="menu-icon" color="primary" (click)="openMenu()"></ion-icon>
+  </div>
+
+  <!-- Imagem de fundo -->
+  <ion-img class="background" src="../../../assets/images/header2.svg"></ion-img>
+
+  <!-- Barra de busca -->
   <ion-searchbar
-    animated="true"
+    animated
     placeholder="Buscar"
     show-clear-button="focus"
     search-icon="search-outline"
-    [debounce]="1000"
     [value]="searchQuery"
     (ionInput)="handleInput($event)"
     (ionBlur)="hideResults()"
     (ionFocus)="showHistory()"
   ></ion-searchbar>
 
-  <ion-list *ngIf="showList && results.length > 0">
-    <ion-item *ngFor="let result of results" (click)="selectItem(result)">
-      <ion-label>{{ result }}</ion-label>
+  <!-- Alternar campo de busca -->
+  <ion-segment [(ngModel)]="field">
+    <ion-segment-button value="title">
+      <ion-label>Título</ion-label>
+    </ion-segment-button>
+    <ion-segment-button value="tags">
+      <ion-label>Tags</ion-label>
+    </ion-segment-button>
+  </ion-segment>
+
+  <!-- Botão de pesquisa -->
+  <ion-button expand="block" (click)="performSearch(searchQuery)">Pesquisar</ion-button>
+
+  <!-- Resultados da busca -->
+  <ion-list>
+    <ion-item *ngFor="let pdf of pdfs">
+      <ion-thumbnail slot="start">
+        <img *ngIf="pdf.id; else placeholder" [src]="thumbnails[pdf.id]" />
+        <ng-template #placeholder>
+          <img src="assets/placeholder.png" />
+        </ng-template>
+      </ion-thumbnail>
+      <ion-label>
+        <h2>{{ pdf.title }}</h2>
+        <p>Tags: {{ pdf.tags.join(', ') }}</p>
+      </ion-label>
+      <ion-button slot="end" (click)="openPDF(pdf)">Abrir</ion-button>
     </ion-item>
   </ion-list>
 
+  <!-- Pesquisa por Categoria -->
   <ion-card class="ion-no-margin container">
     <ion-card-header>
-      <ion-card-title>Pesquise por Categoria</ion-card-title>
     </ion-card-header>
-
-    <swiper-container
+    <!-- <swiper-container
       class="slide-wrapper ion-padding"
-      (slidechange)="swiperSlideChanged($event)"
-      [loop]="false"
       [navigation]="true"
+      [loop]="false"
+      (slidechange)="swiperSlideChanged($event)"
     >
       <swiper-slide *ngFor="let link of links">
         <div class="slide-content">
-          <a href="#" (click)="addToSearch($event, link)" class="slide-link">
-            {{ link }}
-          </a>
+          <a href="#" (click)="addToSearch($event, link)" class="slide-link">{{ link }}</a>
         </div>
       </swiper-slide>
-    </swiper-container>
+    </swiper-container> -->
   </ion-card>
 
+  <!-- PDFs vistos recentemente -->
   <ion-card class="ion-no-margin recents">
     <ion-card-header>
       <ion-card-title>Vistos Recentemente</ion-card-title>
     </ion-card-header>
-
     <ion-grid>
       <ion-row>
-        <ion-col size="4" *ngFor="let pdf of favoritePDFs">
+        <ion-col size="4" *ngFor="let pdf of recentPDFs">
           <ion-card (click)="openPDF(pdf)">
             <ion-thumbnail>
-              <img [src]="pdf.thumbnailUrl" alt="Thumbnail" />
+              <img [src]="pdf.thumbnail" alt="Thumbnail" />
             </ion-thumbnail>
           </ion-card>
         </ion-col>

@@ -71,22 +71,17 @@ export class SignupPage implements OnInit {
     });
   }
 
-  async RegisterUser(value: {
-    name: string;
-    area: string;
-    email: string;
-    password: string;
-  }) {
+  async RegisterUser(value: { name: string; area: string; email: string; password: string }) {
     await this.showAlert(); // Exibe o carregamento
     this.authError = ''; // Reseta o erro
-
+  
     this.authService
       .registerFireAuth(value)
       .then(
         async (resp) => {
           console.log('Registrado com sucesso');
           console.log(resp);
-
+  
           const user = resp.user; // Obtém o objeto do usuário
           if (user) {
             await user
@@ -101,7 +96,7 @@ export class SignupPage implements OnInit {
                 console.error('Erro ao atualizar o perfil:', error);
               });
           }
-
+  
           await this.loading?.dismiss(); // Finaliza o carregamento
           this.router.navigate(['log-in']);
         },
@@ -115,6 +110,7 @@ export class SignupPage implements OnInit {
         this.authError = 'Erro ao realizar o cadastro.';
       });
   }
+  
 
   async errorLoading(message: any) {
     const alert = await this.alertCtrl.create({

@@ -1,39 +1,52 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Minhas Pastas</ion-title>
+  </ion-toolbar>
+</ion-header>
+
 <ion-content [fullscreen]="true">
-  <ion-img
-    class="background"
-    src="../../../assets/images/header2.svg"
-  ></ion-img>
-  <a><ion-icon name="chevron-back-outline" class="goPrev-icon"></ion-icon></a>
+  <ion-img class="background" src="../../../assets/images/header2.svg"></ion-img>
+  <a><ion-icon name="chevron-back-outline" class="goPrev-icon" (click)="backToFolders()"></ion-icon></a>
 
   <ion-grid>
     <div class="header">
       <h2>Minhas Pastas</h2>
     </div>
-    <ion-row>
-      <ion-col size="4" *ngFor="let folder of folders;let i = index">
-        <ion-card (click)="openFolder(folder)">
-          <ion-thumbnail class="folder-thumbnail">
-            <ion-icon
-              class="folder-icon"
-              name="folder-outline"
-              color="secondary"
-            ></ion-icon>
+    <ng-container *ngIf="selectedFolder; else folderList">
+      <ion-button fill="clear" (click)="backToFolders()">Voltar</ion-button>
+      <ion-row>
+        <ion-col size="6" *ngFor="let pdf of pdfs">
+          <ion-card (click)="openPDF(pdf)">
+            <img [src]="pdf.thumbnail" alt="Miniatura do PDF" />
+            <ion-card-header>
+              <ion-card-title>{{ pdf.title }}</ion-card-title>
+            </ion-card-header>
+            <ion-card-content>
+              <p>{{ pdf.description }}</p>
+            </ion-card-content>
+          </ion-card>
+        </ion-col>
+      </ion-row>
+    </ng-container>
 
-            <img
-              [src]="folder.previewImageUrl"
-              *ngIf="folder.previewImageUrl"
-              alt="Preview PDF"
-            />
-          </ion-thumbnail>
-
-          <ion-card-header>
-            <div>
-              <span> {{ folder.name }} </span>
-            </div>
-          </ion-card-header>
-        </ion-card>
-      </ion-col>
-    </ion-row>
+    <ng-template #folderList>
+      <ion-row>
+        <ion-col size="4" *ngFor="let folder of folders; let i = index">
+          <ion-card (click)="selectFolder(folder)">
+            <ion-thumbnail class="folder-thumbnail">
+              <ion-icon class="folder-icon" name="folder-outline" color="secondary"></ion-icon>
+              <img [src]="folder.previewImageUrl" *ngIf="folder.previewImageUrl" alt="Preview PDF" />
+            </ion-thumbnail>
+            <ion-card-header>
+              <div>
+                <span>{{ folder.title }}</span>
+                <p>{{ folder.pdfs.length }} PDFs</p>
+              </div>
+            </ion-card-header>
+          </ion-card>
+        </ion-col>
+      </ion-row>
+    </ng-template>
   </ion-grid>
 
   <ion-fab vertical="bottom" horizontal="end" slot="fixed">
@@ -47,8 +60,8 @@
       <ion-fab-button class="tooltip2">
         <ion-icon class="star-icon" name="star-outline"></ion-icon>
       </ion-fab-button>
-      <ion-fab-button class="tooltip3">
-        <ion-icon class="star-icon" name="add-outline"></ion-icon>
+      <ion-fab-button class="tooltip3" (click)="CreateFolderAlert()">
+        <ion-icon class="add-icon" name="add-outline"></ion-icon>
       </ion-fab-button>
     </div>
   </ion-fab>
