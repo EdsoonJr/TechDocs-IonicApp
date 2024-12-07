@@ -4,7 +4,7 @@ import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { PdfService } from '../../services/pdf.service';
 import { PdfThumbnailService } from '../../services/pdf-thumbnail.service';
 import { Browser } from '@capacitor/browser';
-import { AlertController } from '@ionic/angular'; // Importar AlertController
+import { AlertController } from '@ionic/angular';
 
 @Component({
   selector: 'app-folder',
@@ -18,18 +18,19 @@ export class FolderPage implements OnInit {
 
   constructor(
     private folderService: FolderService,
-    private afAuth: AngularFireAuth, // Serviço para autenticação
+    private afAuth: AngularFireAuth,
     private pdfService: PdfService,
     private pdfThumbnailService: PdfThumbnailService,
-    private alertController: AlertController // Adicionar AlertController
+    private alertController: AlertController
   ) {}
 
   ngOnInit() {
     this.afAuth.authState.subscribe((user) => {
-      if (user && user.uid) { // Certifique-se de que 'user.uid' está definido
-        const userId: string = user.uid; // Agora temos certeza que 'userId' é string
+      if (user && user.uid) {
+        const userId: string = user.uid;
         this.folderService.getFoldersByUser(userId).subscribe((folders) => {
           this.folders = folders;
+          this.loadPreviews(folders);
         });
       } else {
         console.error('Usuário não autenticado ou UID não disponível.');
@@ -37,13 +38,24 @@ export class FolderPage implements OnInit {
     });
   }
 
-  // Selecionar pasta para visualizar PDFs e carregar thumbnails
+  async loadPreviews(folders: any[]) {
+    for (const folder of folders) {
+      if (folder.pdfs.length > 0) {
+        const firstPdfId = folder.pdfs[0];
+        const pdf = await this.pdfService.getPdfById(firstPdfId);
+        if (pdf) {
+          folder.previewImageUrl = await this.pdfThumbnailService.generateThumbnail(pdf.url);
+        }
+      }
+    }
+  }
+
   async selectFolder(folder: any) {
     this.selectedFolder = folder;
-    this.pdfs = []; // Resetar a lista de PDFs
+    this.pdfs = [];
 
     for (const pdfId of folder.pdfs) {
-      const pdf = await this.pdfService.getPdfById(pdfId); // Método que busca o PDF pelo ID
+      const pdf = await this.pdfService.getPdfById(pdfId);
       if (pdf) {
         pdf.thumbnail = await this.pdfThumbnailService.generateThumbnail(pdf.url);
         this.pdfs.push(pdf);
@@ -51,13 +63,11 @@ export class FolderPage implements OnInit {
     }
   }
 
-  // Voltar para a lista de pastas
   backToFolders() {
     this.selectedFolder = null;
-    this.pdfs = []; // Resetar a lista de PDFs
+    this.pdfs = [];
   }
 
-  // Método para abrir o PDF
   async openPDF(pdf: any) {
     try {
       await Browser.open({ url: pdf.url });
@@ -66,7 +76,6 @@ export class FolderPage implements OnInit {
     }
   }
 
-  // Método para abrir o alerta de criação de pasta
   async CreateFolderAlert() {
     const alert = await this.alertController.create({
       header: 'Criar nova pasta',
@@ -89,13 +98,13 @@ export class FolderPage implements OnInit {
         {
           text: 'Criar',
           handler: async (data) => {
-            const user = await this.afAuth.currentUser; // Obtém o usuário autenticado
+            const user = await this.afAuth.currentUser;
             if (user) {
               const newFolder = {
                 title: data.folderName,
-                userId: user.uid, // Obtém o UID do usuário
+                userId: user.uid,
                 createdAt: new Date(),
-                pdfs: [] // Inicializa com um array vazio para 'pdfs'
+                pdfs: []
               };
 
               try {

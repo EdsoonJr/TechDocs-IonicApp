@@ -133,18 +133,20 @@
     </div>
   </form>
 
-  <div class="text-tag">
-    <span>Ou</span>
-  </div>
-  <div class="google-btn">
-    <ion-button fill="clear" class="ion-no-padding">
-      <ion-img
-        src="../../../assets/images/google.png"
-        style="width: 40px; height: 40px"
-      ></ion-img>
-    </ion-button>
-  </div>
-  <div class="login-link">
-    <p>Já é um membro? <a [routerLink]="['/log-in']"> Faça seu Login!</a></p>
-  </div>
+  <ion-card class="ion-no-margin links-wrapper">
+    <div class="text-tag">
+      <span>Ou</span>
+    </div>
+    <div class="google-btn">
+      <ion-button fill="clear" class="ion-no-padding">
+        <ion-img
+          src="../../../assets/images/google.png"
+          style="width: 40px; height: 40px"
+        ></ion-img>
+      </ion-button>
+    </div>
+    <div class="login-link">
+      <p>Já é um membro? <a [routerLink]="['/log-in']"> Faça seu Login!</a></p>
+    </div>
+  </ion-card>
 </ion-content>

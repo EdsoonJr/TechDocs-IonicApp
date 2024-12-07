@@ -1,58 +1,120 @@
-<ion-header>
-  <ion-toolbar>
-    <ion-title>Home</ion-title>
-  </ion-toolbar>
-</ion-header>
+<ion-content [fullscreen]="true">
+  <div class="container">
+    <img src="../../../assets/images/app-logo.svg" alt="App Logo" />
+    <h1>Bem-Vindo(a), usuário</h1>
+  </div>
 
-<ion-content>
-  <ion-grid>
-    <ion-row>
-      <ion-col size="6" *ngFor="let pdf of pdfs">
-        <ion-card>
-          <img [src]="pdf.thumbnail" alt="Miniatura do PDF" />
-          <ion-card-header>
-            <ion-card-title>{{ pdf.title }}</ion-card-title>
-          </ion-card-header>
-          <ion-card-content>
-            <p>{{ pdf.description }}</p>
+  <!-- Card Sugerido -->
+  <ion-card *ngIf="suggestedPdf">
+    <ion-card-header>
+      <ion-card-title color="primary">Sugerido</ion-card-title>
+    </ion-card-header>
+    <ion-grid>
+      <ion-row>
+        <ion-col size="4">
+          <ion-thumbnail class="thumbnail"  (click)="openPDF(suggestedPdf)">
+            <img [src]="suggestedPdf.thumbnail" alt="Imagem Sugerida" />
+          </ion-thumbnail>
+        </ion-col>
+        <ion-col size="8" class="content">
+          <h2 class="title" color="primary">{{ suggestedPdf.title }}</h2>
+          <p class="description">{{ suggestedPdf.description }}</p>
+          <div class="stars">
+            <ion-icon *ngFor="let star of [1, 2, 3, 4, 5]"
+              [name]="star <= (suggestedPdf.userRating || 0) ? 'star' : 'star-outline'"
+              (click)="onRatingChange(suggestedPdf.id, star)" color="warning"></ion-icon>
+          </div>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </ion-card>
 
-            <!-- Avaliação com estrelas -->
+  <!-- Card Favoritos -->
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title color="primary">Favoritos</ion-card-title>
+    </ion-card-header>
+    <ion-grid>
+      <ion-row>
+        <ion-col size="4" *ngFor="let pdf of favoritePDFs">
+          <ion-card (click)="openPDF(pdf)">
+            <ion-thumbnail>
+              <img [src]="pdf.thumbnail" alt="Thumbnail" />
+            </ion-thumbnail>
+          </ion-card>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </ion-card>
+
+  <!-- Botão Flutuante -->
+  <ion-fab vertical="bottom" horizontal="end" slot="fixed">
+    <ion-fab-button id="open-modal">
+      <ion-icon name="add-outline"></ion-icon>
+      <ion-modal trigger="open-modal" (willDismiss)="onWillDismiss($event)">
+        <ng-template>
+          <ion-header>
+            <ion-toolbar>
+              <ion-buttons slot="start">
+                <ion-button (click)="cancel()">
+                  <ion-icon name="close-outline"></ion-icon>
+                </ion-button>
+              </ion-buttons>
+              <ion-title>Upload de PDF</ion-title>
+            </ion-toolbar>
+          </ion-header>
+          <ion-content class="ion-padding">
             <ion-item>
-              <div class="stars">
-                <ion-icon
-                  *ngFor="let star of [1, 2, 3, 4, 5]"
-                  [name]="star <= (pdf.userRating ?? 0) ? 'star' : 'star-outline'"
-                  (click)="onRatingChange(pdf.id, star)"
-                  class="star-icon">
-                </ion-icon>
-              </div>
+              <ion-input
+                label="Título"
+                labelPlacement="stacked"
+                type="text"
+                placeholder="Digite o título"
+                [(ngModel)]="title"
+              ></ion-input>
             </ion-item>
-
-            <p>Média de avaliações: {{ pdf.rating | number: '1.1-1' }}</p>
-
-            <!-- Botões minimalistas lado a lado -->
-            <div style="display: flex; justify-content: space-between; margin-top: 10px;">
-              <!-- Botão Add to Folder -->
-              <ion-button 
-                fill="clear" 
-                color="primary" 
-                size="small" 
-                (click)="addToFolder(pdf)">
-                <ion-icon name="add-circle-outline"></ion-icon>
-              </ion-button>
-
-              <!-- Botão Download -->
-              <ion-button 
-                fill="clear" 
-                color="primary" 
-                size="small" 
-                (click)="downloadPDF(pdf)">
-                <ion-icon name="download-outline"></ion-icon>
+            <ion-item>
+              <ion-input
+                label="Descrição"
+                labelPlacement="stacked"
+                type="text"
+                placeholder="Digite a descrição"
+                [(ngModel)]="description"
+              ></ion-input>
+            </ion-item>
+            <ion-item lines="none">
+              <input
+                type="file"
+                (change)="onFileSelected($event)"
+                accept=".pdf"
+              />
+            </ion-item>
+            <ion-item lines="none">
+              <ion-checkbox
+                slot="start"
+                [(ngModel)]="acceptTerms"
+                aria-label="Accept Terms"
+              ></ion-checkbox>
+              <ion-label>
+                Ao clicar, aceito os termos da
+                <a href="/privacy-policy">Política de Privacidade</a> e
+                reconheço minha responsabilidade ao fazer o upload deste PDF.
+              </ion-label>
+            </ion-item>
+            <div class="send-btn">
+              <ion-button
+                size="small"
+                fill="outline"
+                shape="round"
+                type="submit"
+                (click)="sendPdf()"
+              >
+                Enviar
               </ion-button>
             </div>
-          </ion-card-content>
-        </ion-card>
-      </ion-col>
-    </ion-row>
-  </ion-grid>
+          </ion-content>
+        </ng-template>
+      </ion-modal>      
+    </ion-fab-button>
+  </ion-fab>
 </ion-content>

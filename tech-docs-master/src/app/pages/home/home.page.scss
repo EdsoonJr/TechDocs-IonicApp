@@ -1,24 +1,100 @@
-// .stars {
-//     display: inline;
-   
-//   }
-  
-  .star-icon {
-    font-size: 24px;  /* Tamanho das estrelas */
-    margin-right: 4px;  /* Espaçamento entre as estrelas */
-    cursor: pointer;  /* Muda o cursor para mãozinha ao passar o mouse */
-    color: gold;
+ion-card {
+  margin: 10px;
+  ion-card-title {
+    font-size: 20px;
+    margin-bottom: -20px;
   }
-  
-  .star-icon:hover {
-    color: gold;  /* Cor das estrelas quando o usuário passa o mouse */
+}
+
+ion-thumbnail {
+  width: 100%;
+  height: 150px;
+  object-fit: cover;
+  max-height: 120px;
+}
+
+ion-img {
+  max-height: 50px;
+  object-fit: contain;
+}
+
+ion-button {
+  margin-top: -10px;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 35vh;
+  text-align: center;
+  background-color: transparent;
+  box-shadow: none;
+  h1 {
+    color: var(--ion-color-primary);
+    font-size: 24px;
+    font-weight: 500;
+    margin: 40px 0 60px 0;
   }
-  
-  .stars ion-icon {
-    transition: color 0.3s ease-in-out;
+  img {
+    width: 90px;
+    height: auto;
+    margin: 100px 0 0 0;
   }
-  
-  .star-icon.active {
-    color: gold;  /* Cor das estrelas ativas */
+}
+
+.menu-icon {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  font-size: 32px;
+  color: #000;
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  gap: 4px;
+}
+
+.title {
+  margin: 0;
+  font-size: 18px;
+  font-weight: bold;
+  line-height: 1.2;
+}
+
+.description {
+  margin: 0;
+  font-size: 14px;
+  color: #666;
+  line-height: 1.4;
+}
+
+.stars {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  font-size: 14px;
+}
+
+.add-icon {
+  color: #ffff;
+}
+
+.send-btn {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 80px;
+  ion-button {
+    color: var(--ion-color-primary);
+    font-size: 18px;
+    font-weight: 600;
+    width: 200px;
   }
+}
+
   
