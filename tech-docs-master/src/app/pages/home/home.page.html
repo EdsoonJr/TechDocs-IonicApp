@@ -1,0 +1,58 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Home</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-grid>
+    <ion-row>
+      <ion-col size="6" *ngFor="let pdf of pdfs">
+        <ion-card>
+          <img [src]="pdf.thumbnail" alt="Miniatura do PDF" />
+          <ion-card-header>
+            <ion-card-title>{{ pdf.title }}</ion-card-title>
+          </ion-card-header>
+          <ion-card-content>
+            <p>{{ pdf.description }}</p>
+
+            <!-- Avaliação com estrelas -->
+            <ion-item>
+              <div class="stars">
+                <ion-icon
+                  *ngFor="let star of [1, 2, 3, 4, 5]"
+                  [name]="star <= (pdf.userRating ?? 0) ? 'star' : 'star-outline'"
+                  (click)="onRatingChange(pdf.id, star)"
+                  class="star-icon">
+                </ion-icon>
+              </div>
+            </ion-item>
+
+            <p>Média de avaliações: {{ pdf.rating | number: '1.1-1' }}</p>
+
+            <!-- Botões minimalistas lado a lado -->
+            <div style="display: flex; justify-content: space-between; margin-top: 10px;">
+              <!-- Botão Add to Folder -->
+              <ion-button 
+                fill="clear" 
+                color="primary" 
+                size="small" 
+                (click)="addToFolder(pdf)">
+                <ion-icon name="add-circle-outline"></ion-icon>
+              </ion-button>
+
+              <!-- Botão Download -->
+              <ion-button 
+                fill="clear" 
+                color="primary" 
+                size="small" 
+                (click)="downloadPDF(pdf)">
+                <ion-icon name="download-outline"></ion-icon>
+              </ion-button>
+            </div>
+          </ion-card-content>
+        </ion-card>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>
