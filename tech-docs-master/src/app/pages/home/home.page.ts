@@ -4,7 +4,6 @@ import { PdfThumbnailService } from '../../services/pdf-thumbnail.service';
 import { Pdf } from '../../models/pdfs.model';
 import { Browser } from '@capacitor/browser';
 import { ModalController } from '@ionic/angular';
-import { AddToFolderPage } from '../add-to-folder/add-to-folder.page';
 import { ReviewService } from '../../services/review.service';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { FirebaseStorageService } from '../../services/firebase-storage.service';
@@ -97,14 +96,6 @@ export class HomePage implements OnInit {
     if (pdf) {
       pdf.userRating = newRating;
     }
-  }
-
-  async addToFolder(pdf: Pdf) {
-    const modal = await this.modalController.create({
-      component: AddToFolderPage,
-      componentProps: { pdf },
-    });
-    await modal.present();
   }
 
   // Funções de upload de PDF
