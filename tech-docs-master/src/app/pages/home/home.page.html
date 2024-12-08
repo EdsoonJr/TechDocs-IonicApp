@@ -82,6 +82,16 @@
                 [(ngModel)]="description"
               ></ion-input>
             </ion-item>
+            <!-- Campo para Tags -->
+            <ion-item>
+              <ion-input
+                label="Tags (separadas por vírgula)"
+                labelPlacement="stacked"
+                type="text"
+                placeholder="Digite as tags (ex: educação, TI, PDFs)"
+                [(ngModel)]="tags"
+              ></ion-input>
+            </ion-item>
             <ion-item lines="none">
               <input
                 type="file"
@@ -112,7 +122,7 @@
                 Enviar
               </ion-button>
             </div>
-          </ion-content>
+          </ion-content>   
         </ng-template>
       </ion-modal>      
     </ion-fab-button>
