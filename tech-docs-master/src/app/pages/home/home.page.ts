@@ -7,7 +7,6 @@ import { ModalController } from '@ionic/angular';
 import { ReviewService } from '../../services/review.service';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { FirebaseStorageService } from '../../services/firebase-storage.service';
-import { IonModal } from "@ionic/angular";
 
 @Component({
   selector: 'app-home',
@@ -23,6 +22,7 @@ export class HomePage implements OnInit {
   tags: string = '';
   acceptTerms: boolean = false;
   selectedFile: File | null = null; // Armazena o arquivo selecionado
+  userName: string | null = null; // Nome do usuário autenticado
 
   constructor(
     private pdfService: PdfService,
@@ -38,9 +38,13 @@ export class HomePage implements OnInit {
   }
 
   async loadPDFs() {
+    const user = await this.afAuth.currentUser;
+    if (user) {
+      this.userName = user.displayName ? user.displayName : 'usuário';
+    }
+
     this.pdfService.getPDFs().subscribe({
       next: async (data) => {
-        const user = await this.afAuth.currentUser;
         for (const pdf of data) {
           pdf.thumbnail = await this.pdfThumbnailService.generateThumbnail(pdf.url);
           if (user && pdf.id) {

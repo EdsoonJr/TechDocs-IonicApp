@@ -57,6 +57,20 @@ export class PdfService {
     }
   }
 
+  getPDFsByUser(userId: string) {
+    return this.firestore
+      .collection<Pdf>('pdfs', ref => ref.where('user_id', '==', userId))
+      .snapshotChanges()
+      .pipe(
+        map(actions => actions.map(a => {
+          const data = a.payload.doc.data() as Pdf;
+          const id = a.payload.doc.id;
+          return { id, ...data };
+        }))
+      );
+  }
+  
+
   searchPDFs(query: string, field: 'title' | 'tags'): Observable<Pdf[]> {
     const lowerQuery = query.toLowerCase();
   
