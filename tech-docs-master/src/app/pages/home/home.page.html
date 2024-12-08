@@ -30,22 +30,27 @@
   </ion-card>
 
   <!-- Card Favoritos -->
-  <ion-card>
-    <ion-card-header>
-      <ion-card-title color="primary">Favoritos</ion-card-title>
-    </ion-card-header>
-    <ion-grid>
-      <ion-row>
-        <ion-col size="4" *ngFor="let pdf of favoritePDFs">
-          <ion-card (click)="openPDF(pdf)">
-            <ion-thumbnail>
-              <img [src]="pdf.thumbnail" alt="Thumbnail" />
-            </ion-thumbnail>
-          </ion-card>
-        </ion-col>
-      </ion-row>
-    </ion-grid>
-  </ion-card>
+  <!-- Card Favoritos -->
+<ion-card>
+  <ion-card-header>
+    <ion-card-title color="primary">Favoritos</ion-card-title>
+  </ion-card-header>
+  <ion-grid>
+    <ion-row>
+      <ion-col size="4" *ngFor="let pdf of favoritePDFs">
+        <ion-card (click)="openPDF(pdf)">
+          <ion-thumbnail>
+            <img [src]="pdf.thumbnail" alt="Thumbnail" />
+          </ion-thumbnail>
+          <ion-card-content>
+            <h2 class="title">{{ pdf.title }}</h2>
+            <p class="description">{{ pdf.description }}</p>
+          </ion-card-content>
+        </ion-card>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-card>
 
   <!-- Botão Flutuante -->
   <ion-fab vertical="bottom" horizontal="end" slot="fixed">

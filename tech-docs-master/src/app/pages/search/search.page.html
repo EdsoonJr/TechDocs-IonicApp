@@ -34,12 +34,11 @@
   </ion-segment>
 
   <!-- Botão de pesquisa -->
-  <ion-button expand="block" (click)="performSearch(searchQuery)">Pesquisar</ion-button>
+  <ion-button class="search-button" (click)="performSearch(searchQuery)">Pesquisar</ion-button>
 
-  <!-- Resultados da busca -->
   <ion-list>
-    <ion-item *ngFor="let pdf of pdfs">
-      <ion-thumbnail slot="start">
+    <ion-item *ngFor="let pdf of pdfs" (click)="openPDF(pdf)">
+      <ion-thumbnail slot="start" class="search-thumbnail">
         <img *ngIf="pdf.id; else placeholder" [src]="thumbnails[pdf.id]" />
         <ng-template #placeholder>
           <img src="assets/placeholder.png" />
@@ -49,9 +48,9 @@
         <h2>{{ pdf.title }}</h2>
         <p>Tags: {{ pdf.tags.join(', ') }}</p>
       </ion-label>
-      <ion-button slot="end" (click)="openPDF(pdf)">Abrir</ion-button>
     </ion-item>
   </ion-list>
+  
 
   <!-- Pesquisa por Categoria -->
   <ion-card class="ion-no-margin container">

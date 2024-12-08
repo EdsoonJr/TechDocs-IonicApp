@@ -6,6 +6,16 @@ ion-card {
   }
 }
 
+/* Thumbnails dos PDFs pesquisados */
+ion-thumbnail.search-thumbnail {
+  width: 70px;
+  height: 70px;
+  object-fit: cover;
+  border-radius: 10px;
+  margin-right: 10px;
+}
+
+/* Thumbnails dos PDFs vistos recentemente permanecem inalterados */
 ion-thumbnail {
   width: 100%;
   height: 150px;
@@ -13,14 +23,31 @@ ion-thumbnail {
   max-height: 120px;
 }
 
+
 ion-searchbar {
   position: absolute;
   margin-top: -50px;
 }
 
-ion-button {
-  margin-top: -10px;
+ion-button.search-button {
+  display: block;
+  width: 50%;
+  margin: 10px auto;
+  background-color: var(--ion-color-primary);
+  color: var(--ion-color-light);
+  border-radius: 5px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  font-size: 14px;
+  text-transform: none;
+  --padding-start: 0;
+  --padding-end: 0;
 }
+
+ion-button.search-button::part(native) {
+  height: 35px;
+  line-height: 35px;
+}
+
 
 .background {
   opacity: 0.6;
