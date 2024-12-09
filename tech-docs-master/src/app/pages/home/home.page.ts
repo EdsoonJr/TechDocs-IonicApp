@@ -3,13 +3,13 @@ import { PdfService } from "../../services/pdf.service";
 import { PdfThumbnailService } from "../../services/pdf-thumbnail.service";
 import { Pdf } from "../../models/pdfs.model";
 import { Browser } from "@capacitor/browser";
-import { ModalController } from "@ionic/angular";
+import { ActionSheetController, ModalController } from "@ionic/angular";
 import { ReviewService } from "../../services/review.service";
 import { AngularFireAuth } from "@angular/fire/compat/auth";
 import { FirebaseStorageService } from "../../services/firebase-storage.service";
-import { FolderService } from '../../services/folder.service';  // Novo serviço para pastas
-import { Folder } from 'src/app/models/folder.model';
-import { AddToFolderPage } from '../add-to-folder/add-to-folder.page';
+import { FolderService } from "../../services/folder.service"; // Novo serviço para pastas
+import { Folder } from "src/app/models/folder.model";
+import { AddToFolderPage } from "../add-to-folder/add-to-folder.page";
 @Component({
   selector: "app-home",
   templateUrl: "./home.page.html",
@@ -18,15 +18,15 @@ import { AddToFolderPage } from '../add-to-folder/add-to-folder.page';
 export class HomePage implements OnInit {
   pdfs: Pdf[] = [];
   suggestedPdf: Pdf | null = null;
-  favoritePDFs: Pdf[] = [];
-  title: string = '';
-  description: string = '';
-  tags: string = '';
+  recentPDFs: Pdf[] = [];
+  title: string = "";
+  description: string = "";
+  tags: string = "";
   acceptTerms: boolean = false;
   selectedFile: File | null = null; // Armazena o arquivo selecionado
   userName: string | null = null; // Nome do usuário autenticado
-  isFolderModalOpen: boolean = false;  // Controle do modal de pastas
-  folders: any[] = [];  // Lista de pastas
+  isFolderModalOpen: boolean = false; // Controle do modal de pastas
+  folders: any[] = []; // Lista de pastas
 
   constructor(
     private pdfService: PdfService,
@@ -36,12 +36,12 @@ export class HomePage implements OnInit {
     private reviewService: ReviewService,
     private afAuth: AngularFireAuth,
     private firebaseStorageService: FirebaseStorageService,
-    private folderService: FolderService  // Serviço de pastas
-  ) { }
+    private folderService: FolderService // Serviço de pastas
+  ) {}
 
   ngOnInit() {
     this.loadPDFs();
-    this.loadFolders();  // Carregar pastas
+    this.loadFolders(); // Carregar pastas
   }
 
   // Carregar PDFs
@@ -83,58 +83,56 @@ export class HomePage implements OnInit {
 
   // Carregar pastas
   // Carregar pastas
-async loadFolders() {
-  const user = await this.afAuth.currentUser;
-  if (user) {
-    this.folderService.getFoldersByUser(user.uid).subscribe({
-      next: (folders: Folder[]) => {
-        this.folders = folders;
-        console.log('Pastas carregadas:', this.folders);  // Adicione este log
-      },
-      error: (error) => {
-        console.error('Erro ao carregar pastas:', error);
-      },
-    });
+  async loadFolders() {
+    const user = await this.afAuth.currentUser;
+    if (user) {
+      this.folderService.getFoldersByUser(user.uid).subscribe({
+        next: (folders: Folder[]) => {
+          this.folders = folders;
+          console.log("Pastas carregadas:", this.folders); // Adicione este log
+        },
+        error: (error) => {
+          console.error("Erro ao carregar pastas:", error);
+        },
+      });
+    }
   }
-}
-
 
   // Exibir o Action Sheet com as opções
   async showActionSheet(pdf: Pdf) {
     const actionSheet = await this.actionSheetController.create({
-      header: 'Escolha uma ação',
+      header: "Escolha uma ação",
       buttons: [
         {
-          text: 'Adicionar a Pasta',
-          icon: 'folder',
+          text: "Adicionar a Pasta",
+          icon: "folder",
           handler: () => {
             this.addToFolder(pdf);
-            
-          }
+          },
         },
         {
-          text: 'Abrir PDF',
-          icon: 'open',
+          text: "Abrir PDF",
+          icon: "open",
           handler: () => {
             this.openPDF(pdf);
-          }
+          },
         },
         {
-          text: 'Baixar PDF',
-          icon: 'download',
+          text: "Baixar PDF",
+          icon: "download",
           handler: () => {
             this.downloadPDF(pdf);
-          }
+          },
         },
         {
-          text: 'Cancelar',
-          icon: 'close',
-          role: 'cancel',
+          text: "Cancelar",
+          icon: "close",
+          role: "cancel",
           handler: () => {
-            console.log('Cancelado');
-          }
-        }
-      ]
+            console.log("Cancelado");
+          },
+        },
+      ],
     });
     await actionSheet.present();
   }
@@ -191,8 +189,10 @@ async loadFolders() {
   async sendPdf() {
     if (this.selectedFile) {
       try {
-        this.firebaseStorageService.uploadPDF(this.selectedFile).subscribe(async (downloadURL) => {
-          console.log('Arquivo enviado com sucesso. URL:', downloadURL);
+        this.firebaseStorageService
+          .uploadPDF(this.selectedFile)
+          .subscribe(async (downloadURL) => {
+            console.log("Arquivo enviado com sucesso. URL:", downloadURL);
 
             const user = await this.afAuth.currentUser;
             if (!user) {
@@ -200,22 +200,22 @@ async loadFolders() {
               return;
             }
 
-          const pdfData: Pdf = {
-            title: this.title,
-            description: this.description,
-            tags: this.tags.split(',').map(tag => tag.trim()),
-            user_id: user.uid,
-            upload_date: new Date(),
-            url: downloadURL,
-            download_count: 0,
-            review_count: 0,
-          };
+            const pdfData: Pdf = {
+              title: this.title,
+              description: this.description,
+              tags: this.tags.split(",").map((tag) => tag.trim()),
+              user_id: user.uid,
+              upload_date: new Date(),
+              url: downloadURL,
+              download_count: 0,
+              review_count: 0,
+            };
 
-          await this.pdfService.addPDF(pdfData);
-          console.log('Metadados do PDF salvos com sucesso no Firestore.');
-          this.loadPDFs();
-          this.cancel();
-        });
+            await this.pdfService.addPDF(pdfData);
+            console.log("Metadados do PDF salvos com sucesso no Firestore.");
+            this.loadPDFs();
+            this.cancel();
+          });
       } catch (error) {
         console.error("Erro ao fazer upload do arquivo:", error);
       }
