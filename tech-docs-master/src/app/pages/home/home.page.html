@@ -1,7 +1,7 @@
 <ion-content [fullscreen]="true">
   <div class="container">
     <img src="../../../assets/images/app-logo.svg" alt="App Logo" />
-    <h1>Bem-Vindo(a), {{ userName }}</h1>
+    <h1>Bem-Vindo(a), {{ userName }}!</h1>
   </div>
 
   <ion-card *ngIf="suggestedPdf">
@@ -11,13 +11,14 @@
     <ion-grid>
       <ion-row>
         <ion-col size="4">
-          <ion-thumbnail class="thumbnail" (click)="openPDF(suggestedPdf)">
+          <ion-thumbnail (click)="openPDF(suggestedPdf)">
             <img [src]="suggestedPdf.thumbnail" alt="Imagem Sugerida" />
           </ion-thumbnail>
         </ion-col>
         <ion-col size="8" class="content">
           <h2 class="title" color="primary">{{ suggestedPdf.title }}</h2>
           <p class="description">{{ suggestedPdf.description }}</p>
+          <p class="user">&#64; {{ userName }}</p>
           <div class="stars">
             <ion-icon
               *ngFor="let star of [1, 2, 3, 4, 5]"
@@ -31,16 +32,14 @@
     </ion-grid>
   </ion-card>
 
-  <!-- Card Favoritos -->
-  <!-- Card Favoritos -->
   <ion-card>
     <ion-card-header>
-      <ion-card-title color="primary">Favoritos</ion-card-title>
+      <ion-card-title color="primary">Vistos Recentemente</ion-card-title>
     </ion-card-header>
-    <ion-grid>
+    <ion-grid class="recentPdf-wrapper">
       <ion-row>
-        <ion-col size="4" *ngFor="let pdf of favoritePDFs">
-          <ion-card (click)="openPDF(pdf)">
+        <ion-col size="4" *ngFor="let pdf of recentPDFs">
+          <ion-card (click)="openPDF(pdf)" class="recentPdf-container">
             <ion-thumbnail>
               <img [src]="pdf.thumbnail" alt="Thumbnail" />
             </ion-thumbnail>
