@@ -1,13 +1,17 @@
 import { Component, OnInit, ViewChild } from "@angular/core";
-import { IonModal, ToastController } from "@ionic/angular";
+import {
+  ActionSheetController,
+  IonModal,
+  ToastController,
+} from "@ionic/angular";
 import { AngularFireAuth } from "@angular/fire/compat/auth";
 import { AngularFirestore } from "@angular/fire/compat/firestore";
-import { Router } from "@angular/router"; // Importar Router para redirecionamento
+import { Router } from "@angular/router";
+import { Camera, CameraResultType, CameraSource } from "@capacitor/camera";
 import { PdfService } from "../../services/pdf.service";
-import { PdfThumbnailService } from "../../services/pdf-thumbnail.service"; // Importar o serviço de miniaturas
+import { PdfThumbnailService } from "../../services/pdf-thumbnail.service";
 import { Pdf } from "../../models/pdfs.model";
-import { User } from "../../models/user.model"; // Certifique-se de ajustar o caminho se necessário
-
+import { User } from "../../models/user.model";
 @Component({
   selector: "app-profile",
   templateUrl: "./profile.page.html",
@@ -21,9 +25,11 @@ export class ProfilePage implements OnInit {
   userEmail: string = "";
   userArea: string = "Área de Interesse";
   myUploadedPDFs: Pdf[] = [];
+  avatarSrc: string | undefined = "../../../assets/images/avatar.png";
 
   constructor(
     private toastController: ToastController,
+    private actionSheetCtrl: ActionSheetController,
     private afAuth: AngularFireAuth,
     private pdfService: PdfService,
     private firestore: AngularFirestore,
@@ -66,6 +72,60 @@ export class ProfilePage implements OnInit {
   obscureEmail(email: string): string {
     const [name, domain] = email.split("@");
     return `${name[0]}*******@${domain}`;
+  }
+
+  async presentActionSheet() {
+    const actionSheet = await this.actionSheetCtrl.create({
+      header: "Alterar Foto do Perfil",
+      buttons: [
+        {
+          text: "Carregar Foto",
+          icon: "image",
+          handler: () => {
+            this.uploadPhoto();
+          },
+        },
+        {
+          text: "Remover Foto",
+          icon: "trash",
+          role: "destructive",
+          handler: () => {
+            this.removePhoto();
+          },
+        },
+        {
+          text: "Cancelar",
+          icon: "close",
+          role: "cancel",
+        },
+      ],
+    });
+
+    await actionSheet.present();
+  }
+
+  async uploadPhoto() {
+    console.log("Iniciando o processo de upload de foto...");
+    try {
+      const image = await Camera.getPhoto({
+        quality: 90,
+        allowEditing: true,
+        resultType: CameraResultType.DataUrl,
+        source: CameraSource.Prompt,
+      });
+
+      this.avatarSrc = image.dataUrl;
+      console.log("Foto carregada com sucesso:", this.avatarSrc);
+    } catch (error) {
+      console.error("Erro ao carregar a foto:", error);
+      console.error("Erro ao carregar a foto:", error);
+    }
+  }
+
+  removePhoto() {
+    console.log("Removendo a foto do perfil...");
+    this.avatarSrc = "../../../assets/images/avatar.png";
+    console.log("Foto do perfil removida. Avatar padrão restaurado.");
   }
 
   async loadUploadedPDFs(userId: string) {

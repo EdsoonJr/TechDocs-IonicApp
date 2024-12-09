@@ -3,7 +3,7 @@
   <ion-img src="../../../assets/images/wallpaper.png"></ion-img>
 
   <div class="header">
-    <ion-avatar class="avatar">
+    <ion-avatar class="avatar" (click)="presentActionSheet()">
       <img src="../../../assets/images/avatar.png" alt="Avatar" />
     </ion-avatar>
     <h2>Olá, {{ userName }}!</h2>
