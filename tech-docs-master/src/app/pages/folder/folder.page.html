@@ -1,19 +1,19 @@
-<ion-header>
-  <ion-toolbar>
-    <ion-title>Minhas Pastas</ion-title>
-  </ion-toolbar>
-</ion-header>
-
 <ion-content [fullscreen]="true">
-  <ion-img class="background" src="../../../assets/images/header2.svg"></ion-img>
-  <a><ion-icon name="chevron-back-outline" class="goPrev-icon" (click)="backToFolders()"></ion-icon></a>
+  <ion-img
+    class="background"
+    src="../../../assets/images/header2.svg"
+  ></ion-img>
 
   <ion-grid>
     <div class="header">
       <h2>Minhas Pastas</h2>
     </div>
     <ng-container *ngIf="selectedFolder; else folderList">
-      <ion-button fill="clear" (click)="backToFolders()">Voltar</ion-button>
+      <ion-icon
+        name="chevron-back-outline"
+        class="goPrev-icon"
+        (click)="backToFolders()"
+      ></ion-icon>
       <ion-row>
         <ion-col size="6" *ngFor="let pdf of pdfs">
           <ion-card (click)="openPDF(pdf)">
@@ -34,13 +34,21 @@
         <ion-col size="4" *ngFor="let folder of folders; let i = index">
           <ion-card (click)="selectFolder(folder)">
             <ion-thumbnail class="folder-thumbnail">
-              <ion-icon class="folder-icon" name="folder-outline" color="secondary"></ion-icon>
-              <img [src]="folder.previewImageUrl" *ngIf="folder.previewImageUrl" alt="Preview PDF" />
+              <ion-icon
+                class="folder-icon"
+                name="folder-outline"
+                color="secondary"
+              ></ion-icon>
+              <img
+                [src]="folder.previewImageUrl"
+                *ngIf="folder.previewImageUrl"
+                alt="Preview PDF"
+              />
             </ion-thumbnail>
             <ion-card-header>
               <div>
                 <span>{{ folder.title }}</span>
-                <p>{{ folder.pdfs.length }} PDFs</p>
+                <p class="pdf-length">{{ folder.pdfs.length }} PDFs</p>
               </div>
             </ion-card-header>
           </ion-card>
@@ -50,17 +58,22 @@
   </ion-grid>
 
   <ion-fab vertical="bottom" horizontal="end" slot="fixed">
-    <div class="tooltip-container">
-      <ion-fab-button>
-        <ion-icon class="add-icon" name="hammer-outline"></ion-icon>
+    <div
+      class="tooltip-container"
+      [ngClass]="{'show-tooltip': isTooltipVisible}"
+    >
+      <ion-fab-button (click)="toggleTooltip()">
+        <ion-icon
+          class="add-icon"
+          [name]="isHammerIcon ? 'hammer-outline' : 'close-outline'"
+        ></ion-icon>
       </ion-fab-button>
-      <ion-fab-button class="tooltip1">
-        <ion-icon class="trash-icon" name="trash-outline"></ion-icon>
-      </ion-fab-button>
-      <ion-fab-button class="tooltip2">
-        <ion-icon class="star-icon" name="star-outline"></ion-icon>
-      </ion-fab-button>
-      <ion-fab-button class="tooltip3" (click)="CreateFolderAlert()">
+
+      <ion-fab-button
+        class="tooltip1"
+        (click)="CreateFolderAlert()"
+        *ngIf="isTooltipVisible"
+      >
         <ion-icon class="add-icon" name="add-outline"></ion-icon>
       </ion-fab-button>
     </div>
