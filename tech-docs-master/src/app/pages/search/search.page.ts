@@ -21,6 +21,7 @@ export class SearchPage implements OnInit {
   thumbnails: { [key: string]: string } = {};
   field: "title" | "tags" = "title";
   userName: string | null = null;
+  hasSearched: boolean = false;
 
   constructor(
     private pdfService: PdfService,
@@ -32,6 +33,10 @@ export class SearchPage implements OnInit {
 
   ngOnInit() {
     this.loadRecentPDFs();
+    this.hasSearched = false;
+    this.pdfs = [];
+    this.searchQuery = "";
+    this.results = [];
   }
 
   handleInput(event: any) {
@@ -97,6 +102,8 @@ export class SearchPage implements OnInit {
       return;
     }
 
+    this.hasSearched = true;
+
     // Lógica de busca de PDFs
     this.pdfService.searchPDFs(query, this.field).subscribe({
       next: async (results) => {
@@ -106,6 +113,7 @@ export class SearchPage implements OnInit {
       },
       error: (err) => console.error("Erro ao buscar PDFs:", err),
     });
+
     const user = await this.afAuth.currentUser;
     if (user) {
       this.userName = user.displayName ? user.displayName : "usuário";
@@ -145,8 +153,13 @@ export class SearchPage implements OnInit {
     window.open(pdf.url, "_blank");
   }
 
-  backToHome() {
-    this.navCtrl.navigateRoot("tabs/tabs/home");
-    console.log("Voltar");
+  backToSearch() {
+    this.hasSearched = false;
+    this.pdfs = []; // Limpa os PDFs encontrados na pesquisa
+    this.searchQuery = ""; // Limpa a query de pesquisa
+    this.showList = false; // Opcional: Reseta a lista de sugestões
+    this.results = []; // Limpa os resultados da busca
+    this.navCtrl.navigateRoot("tabs/tabs/search");
+    console.log("Voltando para página de busca");
   }
 }

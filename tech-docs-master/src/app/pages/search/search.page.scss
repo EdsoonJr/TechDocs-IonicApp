@@ -66,6 +66,23 @@ ion-button {
   width: 100px;
 }
 
+.waiting-search {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin-top: 50px;
+  img {
+    width: 220px;
+    height: 220px;
+  }
+  p {
+    font-size: 16px;
+    font-weight: 500;
+    margin-top: 25px;
+  }
+}
+
 .search-item {
   display: flex;
   flex-direction: row;

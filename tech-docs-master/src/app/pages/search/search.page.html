@@ -2,7 +2,7 @@
   <ion-icon
     name="chevron-back-outline"
     class="goPrev-icon"
-    (click)="backToHome()"
+    (click)="backToSearch()"
   ></ion-icon>
 
   <ion-img
@@ -43,6 +43,11 @@
   >
     Buscar
   </ion-button>
+
+  <div class="waiting-search" *ngIf="!hasSearched">
+    <img src="../../../assets/images/search.svg" alt="waiting-search" />
+    <p>O que você está procurando?</p>
+  </div>
 
   <ion-list>
     <ion-item class="search-item" *ngFor="let pdf of pdfs">
