@@ -2,11 +2,14 @@ import { Component, OnInit } from '@angular/core';
 import { PdfService } from '../../services/pdf.service';
 import { PdfThumbnailService } from '../../services/pdf-thumbnail.service';
 import { Pdf } from '../../models/pdfs.model';
-import { Browser } from '@capacitor/browser';
-import { ModalController } from '@ionic/angular';
+import { ModalController, ActionSheetController } from '@ionic/angular';
 import { ReviewService } from '../../services/review.service';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { FirebaseStorageService } from '../../services/firebase-storage.service';
+import { FolderService } from '../../services/folder.service';  // Novo serviço para pastas
+import { Folder } from 'src/app/models/folder.model';
+import { Browser } from '@capacitor/browser';
+import { AddToFolderPage } from '../add-to-folder/add-to-folder.page';
 
 @Component({
   selector: 'app-home',
@@ -14,35 +17,40 @@ import { FirebaseStorageService } from '../../services/firebase-storage.service'
   styleUrls: ['./home.page.scss'],
 })
 export class HomePage implements OnInit {
-  pdfs: Pdf[] = []; // Todos os PDFs carregados
-  suggestedPdf: Pdf | null = null; // PDF sugerido
-  favoritePDFs: Pdf[] = []; // PDFs favoritos
+  pdfs: Pdf[] = [];
+  suggestedPdf: Pdf | null = null;
+  favoritePDFs: Pdf[] = [];
   title: string = '';
   description: string = '';
   tags: string = '';
   acceptTerms: boolean = false;
-  selectedFile: File | null = null; // Armazena o arquivo selecionado
-  userName: string | null = null; // Nome do usuário autenticado
+  selectedFile: File | null = null;
+  userName: string | null = null;
+  isFolderModalOpen: boolean = false;  // Controle do modal de pastas
+  folders: any[] = [];  // Lista de pastas
 
   constructor(
     private pdfService: PdfService,
     private pdfThumbnailService: PdfThumbnailService,
     private modalController: ModalController,
+    private actionSheetController: ActionSheetController,
     private reviewService: ReviewService,
     private afAuth: AngularFireAuth,
-    private firebaseStorageService: FirebaseStorageService
+    private firebaseStorageService: FirebaseStorageService,
+    private folderService: FolderService  // Serviço de pastas
   ) { }
 
   ngOnInit() {
     this.loadPDFs();
+    this.loadFolders();  // Carregar pastas
   }
 
+  // Carregar PDFs
   async loadPDFs() {
     const user = await this.afAuth.currentUser;
     if (user) {
       this.userName = user.displayName ? user.displayName : 'usuário';
     }
-
     this.pdfService.getPDFs().subscribe({
       next: async (data) => {
         for (const pdf of data) {
@@ -70,6 +78,72 @@ export class HomePage implements OnInit {
     });
   }
 
+  // Carregar pastas
+  // Carregar pastas
+async loadFolders() {
+  const user = await this.afAuth.currentUser;
+  if (user) {
+    this.folderService.getFoldersByUser(user.uid).subscribe({
+      next: (folders: Folder[]) => {
+        this.folders = folders;
+        console.log('Pastas carregadas:', this.folders);  // Adicione este log
+      },
+      error: (error) => {
+        console.error('Erro ao carregar pastas:', error);
+      },
+    });
+  }
+}
+
+
+  // Exibir o Action Sheet com as opções
+  async showActionSheet(pdf: Pdf) {
+    const actionSheet = await this.actionSheetController.create({
+      header: 'Escolha uma ação',
+      buttons: [
+        {
+          text: 'Adicionar a Pasta',
+          icon: 'folder',
+          handler: () => {
+            this.addToFolder(pdf);
+            
+          }
+        },
+        {
+          text: 'Abrir PDF',
+          icon: 'open',
+          handler: () => {
+            this.openPDF(pdf);
+          }
+        },
+        {
+          text: 'Baixar PDF',
+          icon: 'download',
+          handler: () => {
+            this.downloadPDF(pdf);
+          }
+        },
+        {
+          text: 'Cancelar',
+          icon: 'close',
+          role: 'cancel',
+          handler: () => {
+            console.log('Cancelado');
+          }
+        }
+      ]
+    });
+    await actionSheet.present();
+  }
+
+  async addToFolder(pdf: Pdf) {
+    const modal = await this.modalController.create({
+      component: AddToFolderPage,
+      componentProps: { pdf }, // Passa o PDF para o modal
+    });
+    await modal.present();
+  }
+
   async openPDF(pdf: Pdf) {
     try {
       await Browser.open({ url: pdf.url });
@@ -90,7 +164,6 @@ export class HomePage implements OnInit {
       console.error('Erro ao baixar o PDF:', error);
     }
   }
-
   async onRatingChange(pdfId: string | undefined, newRating: number) {
     const user = await this.afAuth.currentUser;
     if (!user || !pdfId) return;
@@ -107,29 +180,26 @@ export class HomePage implements OnInit {
     const input = event.target as HTMLInputElement;
     const file = input.files?.[0];
     if (file) {
-      this.selectedFile = file; // Armazena o arquivo selecionado
+      this.selectedFile = file;
     }
   }
 
   async sendPdf() {
     if (this.selectedFile) {
       try {
-        // Fazer upload do arquivo para o Firebase Storage
         this.firebaseStorageService.uploadPDF(this.selectedFile).subscribe(async (downloadURL) => {
           console.log('Arquivo enviado com sucesso. URL:', downloadURL);
 
-          // Obter o usuário autenticado
           const user = await this.afAuth.currentUser;
           if (!user) {
             console.error('Usuário não autenticado');
             return;
           }
 
-          // Criar o objeto PDF com metadados
           const pdfData: Pdf = {
             title: this.title,
             description: this.description,
-            tags: this.tags.split(',').map(tag => tag.trim()), // Converter tags em um array
+            tags: this.tags.split(',').map(tag => tag.trim()),
             user_id: user.uid,
             upload_date: new Date(),
             url: downloadURL,
@@ -137,13 +207,10 @@ export class HomePage implements OnInit {
             review_count: 0,
           };
 
-          // Salvar os metadados no Firestore
           await this.pdfService.addPDF(pdfData);
           console.log('Metadados do PDF salvos com sucesso no Firestore.');
-
-          // Atualizar a lista de PDFs após o upload
           this.loadPDFs();
-          this.cancel(); // Limpa os campos do formulário e fecha o modal
+          this.cancel();
         });
       } catch (error) {
         console.error('Erro ao fazer upload do arquivo:', error);
@@ -153,18 +220,19 @@ export class HomePage implements OnInit {
     }
   }
 
-  // Função para cancelar o modal
   cancel() {
     this.title = '';
     this.description = '';
     this.tags = '';
     this.acceptTerms = false;
-    this.selectedFile = null; // Reseta o arquivo selecionado
+    this.selectedFile = null;
     this.modalController.dismiss();
-    
   }
 
-  // Função para lidar com o fechamento do modal
+  closeFolderModal() {
+    this.isFolderModalOpen = false;
+  }
+
   onWillDismiss(event: any) {
     this.cancel();
   }

@@ -11,7 +11,7 @@
     <ion-grid>
       <ion-row>
         <ion-col size="4">
-          <ion-thumbnail class="thumbnail" (click)="openPDF(suggestedPdf)">
+          <ion-thumbnail class="thumbnail" (click)="showActionSheet(suggestedPdf)">
             <img [src]="suggestedPdf.thumbnail" alt="Imagem Sugerida" />
           </ion-thumbnail>
         </ion-col>
@@ -30,9 +30,8 @@
       </ion-row>
     </ion-grid>
   </ion-card>
-
-  <!-- Card Favoritos -->
-  <!-- Card Favoritos -->
+  
+  <!-- Para Favoritos -->
   <ion-card>
     <ion-card-header>
       <ion-card-title color="primary">Favoritos</ion-card-title>
@@ -40,7 +39,7 @@
     <ion-grid>
       <ion-row>
         <ion-col size="4" *ngFor="let pdf of favoritePDFs">
-          <ion-card (click)="openPDF(pdf)">
+          <ion-card (click)="showActionSheet(pdf)">
             <ion-thumbnail>
               <img [src]="pdf.thumbnail" alt="Thumbnail" />
             </ion-thumbnail>
@@ -53,7 +52,7 @@
       </ion-row>
     </ion-grid>
   </ion-card>
-
+  
   <ion-fab vertical="bottom" horizontal="end" slot="fixed">
     <ion-fab-button id="open-modal">
       <ion-icon name="add-outline"></ion-icon>

@@ -26,7 +26,11 @@ const routes: Routes = [
     path: "tabs",
     loadChildren: () =>
       import("./pages/tabs/tabs.module").then((m) => m.TabsPageModule),
+  },  {
+    path: 'add-to-folder',
+    loadChildren: () => import('./pages/add-to-folder/add-to-folder.module').then( m => m.AddToFolderPageModule)
   },
+
 ];
 
 @NgModule({
