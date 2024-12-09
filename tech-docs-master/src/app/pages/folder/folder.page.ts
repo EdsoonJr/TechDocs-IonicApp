@@ -86,10 +86,12 @@ export class FolderPage implements OnInit {
     for (const pdfId of folder.pdfs) {
       const pdf = await this.pdfService.getPdfById(pdfId);
       if (pdf && pdf.id) {
-        const thumbnailUrl = await this.pdfThumbnailService.generateThumbnail(pdf.url);
+        const thumbnailUrl = await this.pdfThumbnailService.generateThumbnail(
+          pdf.url
+        );
         this.thumbnails[pdf.id] = thumbnailUrl;
         this.pdfs.push(pdf);
-      }  
+      }
     }
   }
 
@@ -174,6 +176,7 @@ export class FolderPage implements OnInit {
   backToFolders() {
     this.selectedFolder = null;
     this.isInsideFolder = false;
+    this.showNoResults = false;
     this.activeTooltip = true;
     this.navCtrl.navigateRoot("/folder");
     console.log("Voltar para lista de pastas");
