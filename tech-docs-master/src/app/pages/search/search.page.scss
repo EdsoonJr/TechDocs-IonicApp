@@ -1,0 +1,158 @@
+ion-card {
+  margin: 10px;
+  ion-card-title {
+    font-size: 20px;
+    margin-bottom: -20px;
+  }
+}
+
+ion-list {
+  margin-top: 30px;
+  padding: 0 20px 0 20px;
+}
+
+ion-thumbnail {
+  object-fit: cover;
+  max-height: 120px;
+}
+
+ion-searchbar {
+  margin-top: 10px;
+}
+
+ion-button {
+  margin-top: -10px;
+}
+
+.goPrev-icon {
+  position: absolute;
+  top: 16px;
+  left: 16px;
+  font-size: 32px;
+  z-index: 999;
+  color: var(--ion-color-primary);
+}
+
+.background {
+  opacity: 0.6;
+  width: 100vw;
+  z-index: 111;
+}
+
+.toggle-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  margin-top: -50px;
+  ion-label {
+    font-weight: 500;
+    margin-right: 10px;
+    z-index: 999;
+  }
+}
+
+.search-toggle {
+  z-index: 999;
+  width: 200px;
+}
+
+.search-btn {
+  color: var(--ion-color-primary);
+  font-weight: 600;
+  position: absolute;
+  top: 180px;
+  right: 20px;
+  width: 100px;
+}
+
+.waiting-search {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin-top: 50px;
+  img {
+    width: 220px;
+    height: 220px;
+  }
+  p {
+    font-size: 16px;
+    font-weight: 500;
+    margin-top: 25px;
+  }
+}
+
+.noResults {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin-top: 50px;
+  img {
+    width: 220px;
+    height: 220px;
+  }
+  p {
+    font-size: 16px;
+    font-weight: 500;
+    margin-top: 25px;
+  }
+}
+
+.search-item {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+  align-items: center;
+  border-radius: 8px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+  margin-bottom: 10px;
+}
+
+.search-thumbnail {
+  width: 100px;
+  height: 100px;
+  border-radius: 8px;
+  object-fit: cover;
+}
+
+.search-info {
+  margin-left: 10px;
+  flex: 1;
+}
+
+.search-title {
+  font-size: 16px;
+  font-weight: bold;
+  margin: 0;
+  line-height: 1.2;
+}
+
+.search-description {
+  font-size: 14px;
+  color: #666;
+  margin: 4px 0;
+}
+
+.search-user {
+  font-size: 12px;
+  color: var(--ion-color-secondary);
+  margin: 0;
+}
+
+.stars {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  font-size: 14px;
+}
+
+.search-button {
+  background: var(--ion-color-primary);
+  color: #fff;
+  width: 80px;
+  font-size: 12px;
+  margin-top: 5px;
+  border-radius: 50%;
+}

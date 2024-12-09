@@ -1,0 +1,152 @@
+<ion-content [fullscreen]="true">
+  <ion-card class="ion-no-margin">
+    <ion-img src="../../../assets/images/header2.svg"></ion-img>
+    <ion-card-header>
+      <ion-card-title> Olá, junte-se a nós!</ion-card-title>
+    </ion-card-header>
+  </ion-card>
+
+  <form
+    [formGroup]="validationFormUser"
+    (ngSubmit)="RegisterUser(validationFormUser.value)"
+  >
+    <div class="ion-padding">
+      <ion-item>
+        <ion-input
+          labelPlacement="floating"
+          [clearInput]="true"
+          type="text"
+          placeholder="nome"
+          formControlName="name"
+          ><div slot="label">
+            Nome <ion-text color="danger">*</ion-text>
+          </div></ion-input
+        >
+        <ion-icon name="person-outline"></ion-icon>
+      </ion-item>
+
+      <div *ngIf="authError" class="error_message">{{ authError }}</div>
+
+      <div>
+        <ng-container *ngFor="let validation of validationUserMessage.name">
+          <div
+            class="error_message"
+            *ngIf="validationFormUser.get('name')?.hasError(validation.type) && (validationFormUser.get('name')?.dirty || validationFormUser.get('name')?.touched)"
+          >
+            {{validation.message}}
+          </div>
+        </ng-container>
+      </div>
+
+      <ion-item>
+        <ion-input
+          labelPlacement="floating"
+          [clearInput]="true"
+          type="text"
+          placeholder="ciência da computação"
+          formControlName="area"
+          ><div slot="label">
+            Área de interesse <ion-text color="danger">*</ion-text>
+          </div></ion-input
+        >
+        <ion-icon name="book-outline"></ion-icon>
+      </ion-item>
+
+      <div *ngIf="authError" class="error_message">{{ authError }}</div>
+
+      <div>
+        <ng-container *ngFor="let validation of validationUserMessage.area">
+          <div
+            class="error_message"
+            *ngIf="validationFormUser.get('area')?.hasError(validation.type) && (validationFormUser.get('area')?.dirty || validationFormUser.get('area')?.touched)"
+          >
+            {{validation.message}}
+          </div>
+        </ng-container>
+      </div>
+
+      <ion-item>
+        <ion-input
+          labelPlacement="floating"
+          [clearInput]="true"
+          type="email"
+          placeholder="email@email.com"
+          formControlName="email"
+          ><div slot="label">
+            Email <ion-text color="danger">*</ion-text>
+          </div></ion-input
+        >
+        <ion-icon name="mail-outline"></ion-icon>
+      </ion-item>
+
+      <div *ngIf="authError" class="error_message">{{ authError }}</div>
+
+      <div>
+        <ng-container *ngFor="let validation of validationUserMessage.email">
+          <div
+            class="error_message"
+            *ngIf="validationFormUser.get('email')?.hasError(validation.type) && (validationFormUser.get('email')?.dirty || validationFormUser.get('email')?.touched)"
+          >
+            {{validation.message}}
+          </div>
+        </ng-container>
+      </div>
+
+      <ion-item>
+        <ion-input
+          labelPlacement="floating"
+          [clearInput]="true"
+          type="password"
+          placeholder="********"
+          formControlName="password"
+          ><div slot="label">
+            Senha <ion-text color="danger">*</ion-text>
+          </div></ion-input
+        >
+        <ion-icon name="lock-closed-outline"></ion-icon>
+      </ion-item>
+
+      <div *ngIf="authError" class="error_message">{{ authError }}</div>
+
+      <div>
+        <ng-container *ngFor="let validation of validationUserMessage.password">
+          <div
+            class="error_message"
+            *ngIf="validationFormUser.get('password')?.hasError(validation.type) && (validationFormUser.get('password')?.dirty || validationFormUser.get('password')?.touched)"
+          >
+            {{validation.message}}
+          </div>
+        </ng-container>
+      </div>
+    </div>
+
+    <div class="signup-btn">
+      <ion-button
+        size="small"
+        fill="outline"
+        shape="round"
+        type="submit"
+        [disabled]="!validationFormUser.valid"
+      >
+        Vamos lá!
+      </ion-button>
+    </div>
+  </form>
+
+  <ion-card class="ion-no-margin links-wrapper">
+    <div class="text-tag">
+      <span>Ou</span>
+    </div>
+    <div class="google-btn">
+      <ion-button fill="clear" class="ion-no-padding">
+        <ion-img
+          src="../../../assets/images/google.png"
+          style="width: 40px; height: 40px"
+        ></ion-img>
+      </ion-button>
+    </div>
+    <div class="login-link">
+      <p>Já é um membro? <a [routerLink]="['/log-in']"> Faça seu Login!</a></p>
+    </div>
+  </ion-card>
+</ion-content>

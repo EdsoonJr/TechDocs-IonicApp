@@ -1,0 +1,88 @@
+<ion-content [fullscreen]="true">
+  <ion-icon
+    name="chevron-back-outline"
+    class="goPrev-icon"
+    (click)="backToSearch()"
+  ></ion-icon>
+
+  <ion-img
+    class="background"
+    src="../../../assets/images/header2.svg"
+  ></ion-img>
+
+  <div class="toggle-container">
+    <ion-label>Buscar por:</ion-label>
+    <ion-segment class="search-toggle" [(ngModel)]="field">
+      <ion-segment-button value="title">
+        <ion-label>Título</ion-label>
+      </ion-segment-button>
+      <ion-segment-button value="tags">
+        <ion-label>Tags</ion-label>
+      </ion-segment-button>
+    </ion-segment>
+  </div>
+
+  <ion-searchbar
+    animated
+    placeholder="programação..."
+    show-clear-button="never"
+    search-icon="search-outline"
+    [value]="searchQuery"
+    (ionInput)="handleInput($event)"
+    (ionBlur)="hideResults()"
+    (ionFocus)="showHistory()"
+  ></ion-searchbar>
+
+  <ion-button
+    size="small"
+    fill="outline"
+    shape="round"
+    type="submit"
+    class="search-btn"
+    (click)="performSearch(searchQuery)"
+  >
+    Buscar
+  </ion-button>
+
+  <div class="waiting-search" *ngIf="!hasSearched">
+    <img src="../../../assets/images/search.svg" alt="waiting-search" />
+    <p>O que você está procurando?</p>
+  </div>
+
+  <div class="noResults" *ngIf="noResultsFound">
+    <img src="../../../assets/images/noFiles.svg" alt="no-files" />
+    <p>Ooops... nenhum arquivo por aqui :(</p>
+  </div>
+
+  <ion-list>
+    <ion-item class="search-item" *ngFor="let pdf of pdfs">
+      <ion-thumbnail class="search-thumbnail" slot="start">
+        <img *ngIf="pdf.id; else placeholder" [src]="thumbnails[pdf.id]" />
+        <ng-template #placeholder>
+          <img src="assets/placeholder.png" />
+        </ng-template>
+      </ion-thumbnail>
+      <ion-label class="search-info">
+        <h2 class="search-title">{{ pdf.title }}</h2>
+        <p class="search-description">Tags: {{ pdf.tags.join(', ') }}</p>
+        <p class="search-user">&#64; {{ userName }}</p>
+        <div class="stars">
+          <ion-icon
+            *ngFor="let star of [1, 2, 3, 4, 5]"
+            [name]="star <= (pdf.userRating || 0) ? 'star' : 'star-outline'"
+            (click)="onRatingChange(pdf.id, star)"
+            color="warning"
+          ></ion-icon>
+        </div>
+      </ion-label>
+      <ion-button
+        class="search-button"
+        size="small"
+        shape="round"
+        (click)="showActionSheet(pdf)"
+      >
+        Abrir
+      </ion-button>
+    </ion-item>
+  </ion-list>
+</ion-content>

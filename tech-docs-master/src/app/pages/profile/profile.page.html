@@ -1,0 +1,95 @@
+<ion-content [fullscreen]="true">
+  <ion-img src="../../../assets/images/wallpaper.png"></ion-img>
+  <ion-img src="../../../assets/images/wallpaper.png"></ion-img>
+
+  <div class="header">
+    <ion-avatar class="avatar" (click)="presentActionSheet()">
+      <img src="../../../assets/images/avatar.png" alt="Avatar" />
+    </ion-avatar>
+    <h2>Olá, {{ userName }}!</h2>
+  </div>
+
+  <ion-card class="info-card">
+    <ion-card-content>
+      <a><ion-icon name="create-outline" class="create-icon"></ion-icon></a>
+      <p>Nome: {{ userName }}</p>
+      <p>Email: {{ userEmail }}</p>
+      <p>Área de Interesse: {{ userArea }}</p>
+    </ion-card-content>
+  </ion-card>
+
+  <ion-list>
+    <ion-item button detail (click)="openModal('downloads')">
+      <ion-icon slot="start" name="cloud-download-outline"></ion-icon>
+      Meus Downloads
+    </ion-item>
+
+    <ion-item button detail (click)="openModal('uploads')">
+      <ion-icon slot="start" name="cloud-download-outline"></ion-icon>
+      Meus Uploads
+    </ion-item>
+
+    <ion-item button detail (click)="openModal('favoritos')">
+      <ion-icon slot="start" name="star-outline"></ion-icon>
+      Favoritos
+    </ion-item>
+
+    <ion-item button detail (click)="openModal('lixeira')">
+      <ion-icon slot="start" name="trash-outline"></ion-icon>
+      Lixeira
+    </ion-item>
+
+    <ion-item button detail>
+      <ion-icon slot="start" name="shield-outline"></ion-icon>
+      Políticas de Segurança
+    </ion-item>
+
+    <ion-modal [isOpen]="isModalOpen" (didDismiss)="closeModal()">
+      <ng-template>
+        <ion-header>
+          <ion-buttons slot="start">
+            <ion-button (click)="closeModal()">
+              <ion-icon name="close-outline" class="close-icon"></ion-icon>
+            </ion-button>
+          </ion-buttons>
+        </ion-header>
+        <ion-content [fullscreen]="true">
+          <ion-img
+            class="modal-background"
+            src="../../../assets/images/header2.svg"
+          ></ion-img>
+
+          <div class="modal-header">
+            <h2>{{ modalTitle }}</h2>
+          </div>
+
+          <ion-card class="modal-container modal-ion-card">
+            <ion-grid>
+              <ion-row>
+                <ion-col size="6" *ngFor="let pdf of myUploadedPDFs">
+                  <ion-card class="modal-info modal-ion-card">
+                    <ion-thumbnail class="modal-ion-thumbnail">
+                      <img alt="Thumbnail" [src]="pdf.thumbnail" />
+                    </ion-thumbnail>
+                    <h2 class="modal-title" color="primary">{{ pdf.title }}</h2>
+                    <p class="modal-description">{{ pdf.description }}</p>
+                    <p class="modal-user">&#64; {{ userName }}</p>
+                    <ion-button [href]="pdf.url" target="_blank"
+                      >Visualizar PDF</ion-button
+                    >
+                  </ion-card>
+                </ion-col>
+              </ion-row>
+            </ion-grid>
+          </ion-card>
+        </ion-content>
+      </ng-template>
+    </ion-modal>
+  </ion-list>
+
+  <div class="logout-btn">
+    <ion-button expand="block" size="small" shape="round" (click)="logout()"
+      >Sair</ion-button
+    >
+  </div>
+</ion-content>

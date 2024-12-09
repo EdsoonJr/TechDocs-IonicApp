@@ -1,0 +1,100 @@
+<ion-content [fullscreen]="true">
+  <ion-card class="ion-no-margin">
+    <div class="img-wrapper">
+      <ion-img src="../../../assets/images/app-logo.svg"></ion-img>
+    </div>
+  </ion-card>
+
+  <form
+    [formGroup]="validationFormUser"
+    (ngSubmit)="LoginUser(validationFormUser.value)"
+  >
+    <div class="ion-padding">
+      <ion-item>
+        <ion-input
+          formControlName="email"
+          [clearInput]="true"
+          type="email"
+          placeholder="email@email.com"
+        ></ion-input>
+        <ion-icon name="mail-outline"></ion-icon>
+      </ion-item>
+
+      <div *ngIf="authError" class="error_message">{{ authError }}</div>
+
+      <div>
+        <ng-container *ngFor="let validation of validationUserMessage.email">
+          <div
+            class="error_message"
+            *ngIf="validationFormUser.get('email')?.hasError(validation.type) && (validationFormUser.get('email')?.dirty || validationFormUser.get('email')?.touched)"
+          >
+            {{validation.message}}
+          </div>
+        </ng-container>
+      </div>
+
+      <ion-item>
+        <ion-input
+          formControlName="password"
+          [clearInput]="true"
+          type="password"
+          placeholder="********"
+        ></ion-input>
+        <ion-icon name="lock-closed-outline"></ion-icon>
+      </ion-item>
+
+      <div>
+        <ng-container *ngFor="let validation of validationUserMessage.password">
+          <div
+            class="error_message"
+            *ngIf="validationFormUser.get('password')?.hasError(validation.type) && (validationFormUser.get('password')?.dirty || validationFormUser.get('password')?.touched)"
+          >
+            {{validation.message}}
+          </div>
+        </ng-container>
+      </div>
+
+      <div class="forgot-password ion-padding">
+        <p id="open-forgetpass">Esqueceu sua senha?</p>
+        <ion-alert
+          trigger="open-forgetpass"
+          header="Por favor, insira seu email"
+          id="reset-password-alert"
+          [buttons]="alertButtons"
+          [inputs]="alertInputs"
+        ></ion-alert>
+      </div>
+    </div>
+
+    <div class="login-btn">
+      <ion-button
+        size="small"
+        fill="outline"
+        shape="round"
+        type="submit"
+        [disabled]="!validationFormUser.valid"
+      >
+        Entrar
+      </ion-button>
+    </div>
+  </form>
+
+  <ion-card class="ion-no-margin links-wrapper">
+    <div class="text-tag">
+      <span>Ou</span>
+    </div>
+    <div class="google-btn">
+      <ion-button fill="clear" class="ion-no-padding">
+        <ion-img
+          src="../../../assets/images/google.png"
+          style="width: 40px; height: 40px"
+        ></ion-img>
+      </ion-button>
+    </div>
+    <div>
+      <p>
+        Novo aqui no TechDocs?<a [routerLink]="['/sign-up']"> Cadastre-se!</a>
+      </p>
+    </div>
+  </ion-card>
+</ion-content>

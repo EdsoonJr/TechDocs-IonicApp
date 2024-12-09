@@ -1,0 +1,34 @@
+<ion-content [fullscreen]="true" scrollY="false">
+  <swiper-container
+    class="ion-padding"
+    (slidechange)="swiperSlideChanged($event)"
+    [loop]="false"
+    [pagination]="true"
+  >
+    <swiper-slide *ngFor="let image of images;let i = index"
+      ><ion-img [src]="image" />
+
+      <div *ngIf="i === 0" class="header">
+        <ion-card-title>
+          {{ title[0] }}
+          <p class="subtitle">{{ content[i] }}</p>
+        </ion-card-title>
+      </div>
+
+      <div *ngIf="i !== 0" class="content">
+        <p>{{ content[i] }}</p>
+      </div>
+
+      <ion-fab
+        vertical="center"
+        horizontal="center"
+        style="margin-bottom: 50px"
+        *ngIf="i === content.length - 1"
+      >
+        <ion-fab-button [routerLink]="['/log-in']">
+          <ion-icon name="chevron-forward"></ion-icon>
+        </ion-fab-button>
+      </ion-fab>
+    </swiper-slide>
+  </swiper-container>
+</ion-content>
