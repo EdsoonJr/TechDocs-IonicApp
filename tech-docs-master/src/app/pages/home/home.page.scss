@@ -79,10 +79,15 @@ ion-button {
 
 .title {
   margin: 0;
-  font-size: 18px;
+  font-size: 16px;
   font-weight: bold;
   line-height: 1.2;
   color: var(--ion-color-primary);
+  word-break: break-word;
+  hyphens: auto;
+  overflow-wrap: break-word;
+  white-space: normal;
+  overflow: hidden;
 }
 
 .description {
