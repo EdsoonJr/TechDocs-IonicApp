@@ -1,12 +1,12 @@
 import { Component, OnInit, ViewChild } from "@angular/core";
 import { IonModal, ToastController } from "@ionic/angular";
-import { AngularFireAuth } from '@angular/fire/compat/auth';
-import { AngularFirestore } from '@angular/fire/compat/firestore';
-import { Router } from '@angular/router'; // Importar Router para redirecionamento
-import { PdfService } from '../../services/pdf.service';
-import { PdfThumbnailService } from '../../services/pdf-thumbnail.service'; // Importar o serviço de miniaturas
-import { Pdf } from '../../models/pdfs.model';
-import { User } from '../../models/user.model'; // Certifique-se de ajustar o caminho se necessário
+import { AngularFireAuth } from "@angular/fire/compat/auth";
+import { AngularFirestore } from "@angular/fire/compat/firestore";
+import { Router } from "@angular/router"; // Importar Router para redirecionamento
+import { PdfService } from "../../services/pdf.service";
+import { PdfThumbnailService } from "../../services/pdf-thumbnail.service"; // Importar o serviço de miniaturas
+import { Pdf } from "../../models/pdfs.model";
+import { User } from "../../models/user.model"; // Certifique-se de ajustar o caminho se necessário
 
 @Component({
   selector: "app-profile",
@@ -27,8 +27,8 @@ export class ProfilePage implements OnInit {
     private afAuth: AngularFireAuth,
     private pdfService: PdfService,
     private firestore: AngularFirestore,
-    private pdfThumbnailService: PdfThumbnailService, // Injetar o serviço de miniaturas
-    private router: Router // Injetar o Router
+    private pdfThumbnailService: PdfThumbnailService,
+    private router: Router
   ) {}
 
   ngOnInit() {
@@ -37,23 +37,29 @@ export class ProfilePage implements OnInit {
 
   async loadUserInfo() {
     const user = await this.afAuth.currentUser;
-    console.log('Usuário:', user);  // Log para verificar se o usuário está sendo carregado corretamente
-  
+    console.log("Usuário:", user);
+
     if (user) {
       this.userName = user.displayName ? user.displayName : "Usuário";
-      this.userEmail = user.email ? this.obscureEmail(user.email) : "**************";
-      
+      this.userEmail = user.email
+        ? this.obscureEmail(user.email)
+        : "**************";
+
       // Buscar informações adicionais do usuário na coleção "users"
-      const userDoc = await this.firestore.collection<User>('users').doc(user.uid).get().toPromise();
-      console.log('Documento do usuário:', userDoc);  // Log para verificar se o documento do usuário foi encontrado
+      const userDoc = await this.firestore
+        .collection<User>("users")
+        .doc(user.uid)
+        .get()
+        .toPromise();
+      console.log("Documento do usuário:", userDoc);
       if (userDoc && userDoc.exists) {
         const userData = userDoc.data();
         if (userData) {
           this.userArea = userData.area || "Área de Interesse";
         }
       }
-  
-      this.loadUploadedPDFs(user.uid);  // Carregar PDFs após obter os dados do usuário
+
+      this.loadUploadedPDFs(user.uid);
     }
   }
 
@@ -63,22 +69,24 @@ export class ProfilePage implements OnInit {
   }
 
   async loadUploadedPDFs(userId: string) {
-    console.log('Carregando PDFs para o usuário:', userId);  // Log para verificar o ID do usuário
-  
+    console.log("Carregando PDFs para o usuário:", userId);
+
     this.pdfService.getPDFsByUser(userId).subscribe({
       next: async (pdfs: Pdf[]) => {
-        console.log('PDFs carregados:', pdfs);  // Log para verificar os PDFs carregados
+        console.log("PDFs carregados:", pdfs);
         this.myUploadedPDFs = pdfs;
 
         // Gerar miniaturas para os PDFs carregados
         for (const pdf of this.myUploadedPDFs) {
           if (pdf.url) {
-            pdf.thumbnail = await this.pdfThumbnailService.generateThumbnail(pdf.url);
+            pdf.thumbnail = await this.pdfThumbnailService.generateThumbnail(
+              pdf.url
+            );
           }
         }
       },
       error: (err: any) => {
-        console.error('Erro ao carregar PDFs:', err);  // Log para verificar o erro ao carregar PDFs
+        console.error("Erro ao carregar PDFs:", err);
       },
     });
   }
@@ -110,15 +118,14 @@ export class ProfilePage implements OnInit {
     toast.present();
   }
 
-  // Função de logout
   async logout() {
     try {
       await this.afAuth.signOut();
-      this.showToast('Logout realizado com sucesso!', 'success');
-      this.router.navigateByUrl('/log-in'); // Redirecionar para a página de login
+      this.showToast("Logout realizado com sucesso!", "success");
+      this.router.navigateByUrl("/log-in");
     } catch (error) {
-      console.error('Erro ao fazer logout:', error);
-      this.showToast('Erro ao fazer logout', 'warning');
+      console.error("Erro ao fazer logout:", error);
+      this.showToast("Erro ao fazer logout", "warning");
     }
   }
 }
