@@ -50,13 +50,6 @@ ion-icon {
   width: 100vw;
 }
 
-.goPrev-icon {
-  position: absolute;
-  top: 16px;
-  left: 16px;
-  font-size: 32px;
-}
-
 .header {
   margin: 20px 0 40px 0;
   padding: 20px;
@@ -67,6 +60,16 @@ ion-icon {
     font-weight: 500;
   }
 }
+
+.goPrev-icon {
+  position: absolute;
+  top: 16px;
+  left: 16px;
+  font-size: 32px;
+  z-index: 999;
+  color: var(--ion-color-primary);
+}
+
 
 .folder-thumbnail {
   position: relative;

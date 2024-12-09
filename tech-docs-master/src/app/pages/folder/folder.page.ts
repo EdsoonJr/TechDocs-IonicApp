@@ -4,7 +4,7 @@ import { AngularFireAuth } from "@angular/fire/compat/auth";
 import { PdfService } from "../../services/pdf.service";
 import { PdfThumbnailService } from "../../services/pdf-thumbnail.service";
 import { Browser } from "@capacitor/browser";
-import { AlertController } from "@ionic/angular";
+import { AlertController, NavController } from "@ionic/angular";
 
 @Component({
   selector: "app-folder",
@@ -23,7 +23,8 @@ export class FolderPage implements OnInit {
     private afAuth: AngularFireAuth,
     private pdfService: PdfService,
     private pdfThumbnailService: PdfThumbnailService,
-    private alertController: AlertController
+    private alertController: AlertController,
+    private navCtrl: NavController
   ) {}
 
   ngOnInit() {
@@ -70,7 +71,8 @@ export class FolderPage implements OnInit {
 
   backToFolders() {
     this.selectedFolder = null;
-    this.pdfs = [];
+    this.navCtrl.navigateRoot("/folder");
+    console.log("Voltar para lista de pastas");
   }
 
   async openPDF(pdf: any) {
