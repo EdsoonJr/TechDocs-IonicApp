@@ -1,20 +1,19 @@
-import { Component, OnInit } from '@angular/core';
-import { PdfService } from '../../services/pdf.service';
-import { PdfThumbnailService } from '../../services/pdf-thumbnail.service';
-import { Pdf } from '../../models/pdfs.model';
-import { ModalController, ActionSheetController } from '@ionic/angular';
-import { ReviewService } from '../../services/review.service';
-import { AngularFireAuth } from '@angular/fire/compat/auth';
-import { FirebaseStorageService } from '../../services/firebase-storage.service';
+import { Component, OnInit } from "@angular/core";
+import { PdfService } from "../../services/pdf.service";
+import { PdfThumbnailService } from "../../services/pdf-thumbnail.service";
+import { Pdf } from "../../models/pdfs.model";
+import { Browser } from "@capacitor/browser";
+import { ModalController } from "@ionic/angular";
+import { ReviewService } from "../../services/review.service";
+import { AngularFireAuth } from "@angular/fire/compat/auth";
+import { FirebaseStorageService } from "../../services/firebase-storage.service";
 import { FolderService } from '../../services/folder.service';  // Novo serviço para pastas
 import { Folder } from 'src/app/models/folder.model';
-import { Browser } from '@capacitor/browser';
 import { AddToFolderPage } from '../add-to-folder/add-to-folder.page';
-
 @Component({
-  selector: 'app-home',
-  templateUrl: './home.page.html',
-  styleUrls: ['./home.page.scss'],
+  selector: "app-home",
+  templateUrl: "./home.page.html",
+  styleUrls: ["./home.page.scss"],
 })
 export class HomePage implements OnInit {
   pdfs: Pdf[] = [];
@@ -24,8 +23,8 @@ export class HomePage implements OnInit {
   description: string = '';
   tags: string = '';
   acceptTerms: boolean = false;
-  selectedFile: File | null = null;
-  userName: string | null = null;
+  selectedFile: File | null = null; // Armazena o arquivo selecionado
+  userName: string | null = null; // Nome do usuário autenticado
   isFolderModalOpen: boolean = false;  // Controle do modal de pastas
   folders: any[] = [];  // Lista de pastas
 
@@ -49,14 +48,19 @@ export class HomePage implements OnInit {
   async loadPDFs() {
     const user = await this.afAuth.currentUser;
     if (user) {
-      this.userName = user.displayName ? user.displayName : 'usuário';
+      this.userName = user.displayName ? user.displayName : "usuário";
     }
     this.pdfService.getPDFs().subscribe({
       next: async (data) => {
         for (const pdf of data) {
-          pdf.thumbnail = await this.pdfThumbnailService.generateThumbnail(pdf.url);
+          pdf.thumbnail = await this.pdfThumbnailService.generateThumbnail(
+            pdf.url
+          );
           if (user && pdf.id) {
-            const review = await this.reviewService.getUserReviewForPdf(pdf.id, user.uid);
+            const review = await this.reviewService.getUserReviewForPdf(
+              pdf.id,
+              user.uid
+            );
             pdf.userRating = review ? review.rating : 0;
           } else {
             pdf.userRating = 0;
@@ -64,16 +68,15 @@ export class HomePage implements OnInit {
         }
         this.pdfs = data;
 
-        // Selecionar PDF aleatório para "Sugerido"
         if (this.pdfs.length > 0) {
-          this.suggestedPdf = this.pdfs[Math.floor(Math.random() * this.pdfs.length)];
+          this.suggestedPdf =
+            this.pdfs[Math.floor(Math.random() * this.pdfs.length)];
         }
 
-        // Selecionar alguns PDFs como "Favoritos"
-        this.favoritePDFs = this.pdfs.slice(0, 3); // Exibir os 4 primeiros como exemplo
+        this.recentPDFs = this.pdfs.slice(0, 3);
       },
       error: (error) => {
-        console.error('Erro ao carregar PDFs:', error);
+        console.error("Erro ao carregar PDFs:", error);
       },
     });
   }
@@ -148,7 +151,7 @@ async loadFolders() {
     try {
       await Browser.open({ url: pdf.url });
     } catch (error) {
-      console.error('Erro ao abrir o PDF:', error);
+      console.error("Erro ao abrir o PDF:", error);
     }
   }
 
@@ -156,12 +159,12 @@ async loadFolders() {
     try {
       const response = await fetch(pdf.url);
       const blob = await response.blob();
-      const link = document.createElement('a');
+      const link = document.createElement("a");
       link.href = URL.createObjectURL(blob);
       link.download = `${pdf.title}.pdf`;
       link.click();
     } catch (error) {
-      console.error('Erro ao baixar o PDF:', error);
+      console.error("Erro ao baixar o PDF:", error);
     }
   }
   async onRatingChange(pdfId: string | undefined, newRating: number) {
@@ -181,6 +184,7 @@ async loadFolders() {
     const file = input.files?.[0];
     if (file) {
       this.selectedFile = file;
+      this.selectedFile = file;
     }
   }
 
@@ -190,11 +194,11 @@ async loadFolders() {
         this.firebaseStorageService.uploadPDF(this.selectedFile).subscribe(async (downloadURL) => {
           console.log('Arquivo enviado com sucesso. URL:', downloadURL);
 
-          const user = await this.afAuth.currentUser;
-          if (!user) {
-            console.error('Usuário não autenticado');
-            return;
-          }
+            const user = await this.afAuth.currentUser;
+            if (!user) {
+              console.error("Usuário não autenticado");
+              return;
+            }
 
           const pdfData: Pdf = {
             title: this.title,
@@ -213,17 +217,17 @@ async loadFolders() {
           this.cancel();
         });
       } catch (error) {
-        console.error('Erro ao fazer upload do arquivo:', error);
+        console.error("Erro ao fazer upload do arquivo:", error);
       }
     } else {
-      console.error('Nenhum arquivo selecionado.');
+      console.error("Nenhum arquivo selecionado.");
     }
   }
 
   cancel() {
-    this.title = '';
-    this.description = '';
-    this.tags = '';
+    this.title = "";
+    this.description = "";
+    this.tags = "";
     this.acceptTerms = false;
     this.selectedFile = null;
     this.modalController.dismiss();
