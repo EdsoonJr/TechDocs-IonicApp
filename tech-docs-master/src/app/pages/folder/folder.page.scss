@@ -37,14 +37,6 @@ ion-card-header {
   }
 }
 
-ion-thumbnail img {
-  position: absolute;
-  width: 60%;
-  height: 60%;
-  object-fit: cover;
-  border-radius: 5px;
-}
-
 ion-icon {
   color: var(--ion-color-primary);
 }
@@ -82,6 +74,13 @@ ion-icon {
   justify-content: center;
   align-items: center;
   margin-left: 8px;
+  img {
+    position: absolute;
+    width: 60%;
+    height: 60%;
+    object-fit: cover;
+    border-radius: 5px;
+  }
 }
 
 .folder-icon {
@@ -203,6 +202,15 @@ ion-icon {
   align-items: center;
   gap: 2px;
   font-size: 14px;
+}
+
+.search-button {
+  background: var(--ion-color-primary);
+  color: #fff;
+  width: 80px;
+  font-size: 12px;
+  margin-top: 5px;
+  border-radius: 50%;
 }
 
 .noResults {

@@ -17,11 +17,7 @@
     ></ion-icon>
 
     <ion-list *ngIf="selectedFolder; else folderList">
-      <ion-item
-        class="search-item"
-        *ngFor="let pdf of pdfs"
-        (click)="showActionSheet(pdf)"
-      >
+      <ion-item class="search-item" *ngFor="let pdf of pdfs">
         <ion-thumbnail class="search-thumbnail" slot="start">
           <img *ngIf="pdf.id; else placeholder" [src]="thumbnails[pdf.id]" />
           <ng-template #placeholder>
@@ -41,6 +37,14 @@
             ></ion-icon>
           </div>
         </ion-label>
+        <ion-button
+          class="search-button"
+          size="small"
+          shape="round"
+          (click)="showActionSheet(pdf)"
+        >
+          Abrir
+        </ion-button>
       </ion-item>
     </ion-list>
 
