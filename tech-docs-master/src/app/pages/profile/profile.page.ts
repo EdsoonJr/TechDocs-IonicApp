@@ -2,7 +2,9 @@ import { Component, OnInit, ViewChild } from "@angular/core";
 import { IonModal, ToastController } from "@ionic/angular";
 import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
+import { Router } from '@angular/router'; // Importar Router para redirecionamento
 import { PdfService } from '../../services/pdf.service';
+import { PdfThumbnailService } from '../../services/pdf-thumbnail.service'; // Importar o serviço de miniaturas
 import { Pdf } from '../../models/pdfs.model';
 import { User } from '../../models/user.model'; // Certifique-se de ajustar o caminho se necessário
 
@@ -24,7 +26,9 @@ export class ProfilePage implements OnInit {
     private toastController: ToastController,
     private afAuth: AngularFireAuth,
     private pdfService: PdfService,
-    private firestore: AngularFirestore
+    private firestore: AngularFirestore,
+    private pdfThumbnailService: PdfThumbnailService, // Injetar o serviço de miniaturas
+    private router: Router // Injetar o Router
   ) {}
 
   ngOnInit() {
@@ -58,13 +62,20 @@ export class ProfilePage implements OnInit {
     return `${name[0]}*******@${domain}`;
   }
 
-  loadUploadedPDFs(userId: string) {
+  async loadUploadedPDFs(userId: string) {
     console.log('Carregando PDFs para o usuário:', userId);  // Log para verificar o ID do usuário
   
     this.pdfService.getPDFsByUser(userId).subscribe({
-      next: (pdfs: Pdf[]) => {
+      next: async (pdfs: Pdf[]) => {
         console.log('PDFs carregados:', pdfs);  // Log para verificar os PDFs carregados
         this.myUploadedPDFs = pdfs;
+
+        // Gerar miniaturas para os PDFs carregados
+        for (const pdf of this.myUploadedPDFs) {
+          if (pdf.url) {
+            pdf.thumbnail = await this.pdfThumbnailService.generateThumbnail(pdf.url);
+          }
+        }
       },
       error: (err: any) => {
         console.error('Erro ao carregar PDFs:', err);  // Log para verificar o erro ao carregar PDFs
@@ -97,5 +108,17 @@ export class ProfilePage implements OnInit {
       color,
     });
     toast.present();
+  }
+
+  // Função de logout
+  async logout() {
+    try {
+      await this.afAuth.signOut();
+      this.showToast('Logout realizado com sucesso!', 'success');
+      this.router.navigateByUrl('/log-in'); // Redirecionar para a página de login
+    } catch (error) {
+      console.error('Erro ao fazer logout:', error);
+      this.showToast('Erro ao fazer logout', 'warning');
+    }
   }
 }
