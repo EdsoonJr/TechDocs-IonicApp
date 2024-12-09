@@ -44,6 +44,11 @@
       </ion-item>
     </ion-list>
 
+    <div class="noResults" *ngIf="showNoResults">
+      <img src="../../../assets/images/noFiles.svg" alt="no-files" />
+      <p>Ooops... nenhum arquivo por aqui :(</p>
+    </div>
+
     <ng-template #folderList>
       <ion-icon
         name="chevron-back-outline"
@@ -79,7 +84,12 @@
     </ng-template>
   </ion-grid>
 
-  <ion-fab vertical="bottom" horizontal="end" slot="fixed" *ngIf="activeTooltip">
+  <ion-fab
+    vertical="bottom"
+    horizontal="end"
+    slot="fixed"
+    *ngIf="activeTooltip"
+  >
     <div
       class="tooltip-container"
       [ngClass]="{'show-tooltip': isTooltipVisible}"

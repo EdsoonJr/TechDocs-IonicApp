@@ -21,16 +21,17 @@ import { AddToFolderPage } from "../add-to-folder/add-to-folder.page";
   styleUrls: ["./folder.page.scss"],
 })
 export class FolderPage implements OnInit {
-  folders: any[] = [];
+  title: string = "Minhas Pastas";
   selectedFolder: any = null;
-  pdfs: any[] = [];
+  userName: string | null = null;
   isTooltipVisible: boolean = false;
   isHammerIcon: boolean = true;
-  thumbnails: { [key: string]: string } = {};
-  userName: string | null = null;
-  title: string = "Minhas Pastas";
   isInsideFolder: boolean = false;
   activeTooltip: boolean = true;
+  showNoResults: boolean = false;
+  folders: any[] = [];
+  pdfs: any[] = [];
+  thumbnails: { [key: string]: string } = {};
 
   @ViewChild(IonTitle, { static: false }) ionTitle!: IonTitle;
 
@@ -79,6 +80,8 @@ export class FolderPage implements OnInit {
     this.selectedFolder = folder;
     this.pdfs = [];
     this.title = "Arquivos";
+
+    this.showNoResults = folder.pdfs.length === 0;
 
     for (const pdfId of folder.pdfs) {
       const pdf = await this.pdfService.getPdfById(pdfId);

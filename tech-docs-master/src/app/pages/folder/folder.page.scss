@@ -204,3 +204,20 @@ ion-icon {
   gap: 2px;
   font-size: 14px;
 }
+
+.noResults {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin-top: 50px;
+  img {
+    width: 220px;
+    height: 220px;
+  }
+  p {
+    font-size: 16px;
+    font-weight: 500;
+    margin-top: 25px;
+  }
+}
