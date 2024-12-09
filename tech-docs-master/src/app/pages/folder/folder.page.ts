@@ -1,10 +1,19 @@
-import { Component, HostListener, OnInit } from "@angular/core";
-import { FolderService } from "../../services/folder.service";
+import { Component, HostListener, OnInit, ViewChild } from "@angular/core";
 import { AngularFireAuth } from "@angular/fire/compat/auth";
+import { FolderService } from "../../services/folder.service";
 import { PdfService } from "../../services/pdf.service";
+import { ReviewService } from "src/app/services/review.service";
 import { PdfThumbnailService } from "../../services/pdf-thumbnail.service";
 import { Browser } from "@capacitor/browser";
-import { AlertController, NavController } from "@ionic/angular";
+import { IonTitle } from "@ionic/angular";
+import {
+  ActionSheetController,
+  AlertController,
+  ModalController,
+  NavController,
+} from "@ionic/angular";
+import { Pdf } from "src/app/models/pdfs.model";
+import { AddToFolderPage } from "../add-to-folder/add-to-folder.page";
 
 @Component({
   selector: "app-folder",
@@ -17,14 +26,24 @@ export class FolderPage implements OnInit {
   pdfs: any[] = [];
   isTooltipVisible: boolean = false;
   isHammerIcon: boolean = true;
+  thumbnails: { [key: string]: string } = {};
+  userName: string | null = null;
+  title: string = "Minhas Pastas";
+  isInsideFolder: boolean = false;
+  activeTooltip: boolean = true;
+
+  @ViewChild(IonTitle, { static: false }) ionTitle!: IonTitle;
 
   constructor(
-    private folderService: FolderService,
     private afAuth: AngularFireAuth,
+    private folderService: FolderService,
     private pdfService: PdfService,
     private pdfThumbnailService: PdfThumbnailService,
+    private reviewService: ReviewService,
+    private modalController: ModalController,
     private alertController: AlertController,
-    private navCtrl: NavController
+    private navCtrl: NavController,
+    private actionSheetController: ActionSheetController
   ) {}
 
   ngOnInit() {
@@ -55,8 +74,11 @@ export class FolderPage implements OnInit {
   }
 
   async selectFolder(folder: any) {
+    this.isInsideFolder = true;
+    this.activeTooltip = false;
     this.selectedFolder = folder;
     this.pdfs = [];
+    this.title = "Arquivos";
 
     for (const pdfId of folder.pdfs) {
       const pdf = await this.pdfService.getPdfById(pdfId);
@@ -69,10 +91,61 @@ export class FolderPage implements OnInit {
     }
   }
 
-  backToFolders() {
-    this.selectedFolder = null;
-    this.navCtrl.navigateRoot("/folder");
-    console.log("Voltar para lista de pastas");
+  async onRatingChange(pdfId: string | undefined, newRating: number) {
+    const user = await this.afAuth.currentUser;
+    if (!user || !pdfId) return;
+    const review = { pdfId, userId: user.uid, rating: newRating };
+    await this.reviewService.addOrUpdateReview(review);
+    const pdf = this.pdfs.find((p) => p.id === pdfId);
+    if (pdf) {
+      pdf.userRating = newRating;
+    }
+  }
+
+  async showActionSheet(pdf: Pdf) {
+    const actionSheet = await this.actionSheetController.create({
+      header: "Escolha uma ação",
+      buttons: [
+        {
+          text: "Adicionar a Pasta",
+          icon: "folder",
+          handler: () => {
+            this.addToFolder(pdf);
+          },
+        },
+        {
+          text: "Abrir PDF",
+          icon: "open",
+          handler: () => {
+            this.openPDF(pdf);
+          },
+        },
+        {
+          text: "Baixar PDF",
+          icon: "download",
+          handler: () => {
+            this.downloadPDF(pdf);
+          },
+        },
+        {
+          text: "Cancelar",
+          icon: "close",
+          role: "cancel",
+          handler: () => {
+            console.log("Cancelado");
+          },
+        },
+      ],
+    });
+    await actionSheet.present();
+  }
+
+  async addToFolder(pdf: Pdf) {
+    const modal = await this.modalController.create({
+      component: AddToFolderPage,
+      componentProps: { pdf },
+    });
+    await modal.present();
   }
 
   async openPDF(pdf: any) {
@@ -81,6 +154,28 @@ export class FolderPage implements OnInit {
     } catch (error) {
       console.error("Erro ao abrir o PDF:", error);
     }
+  }
+
+  async downloadPDF(pdf: Pdf) {
+    try {
+      const response = await fetch(pdf.url);
+      const blob = await response.blob();
+      const link = document.createElement("a");
+      link.href = URL.createObjectURL(blob);
+      link.download = `${pdf.title}.pdf`;
+      link.click();
+    } catch (error) {
+      console.error("Erro ao baixar o PDF:", error);
+    }
+  }
+
+  backToFolders() {
+    this.selectedFolder = null;
+    this.isInsideFolder = false;
+    this.activeTooltip = true;
+    this.navCtrl.navigateRoot("/folder");
+    console.log("Voltar para lista de pastas");
+    this.title = "Minhas Pastas";
   }
 
   async CreateFolderAlert() {

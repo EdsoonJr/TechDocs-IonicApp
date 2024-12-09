@@ -6,28 +6,43 @@
 
   <ion-grid>
     <div class="header">
-      <h2>Minhas Pastas</h2>
+      <h2>{{title}}</h2>
     </div>
-    <ng-container *ngIf="selectedFolder; else folderList">
-      <ion-icon
-        name="chevron-back-outline"
-        class="goPrev-icon"
-        (click)="backToFolders()"
-      ></ion-icon>
-      <ion-row>
-        <ion-col size="6" *ngFor="let pdf of pdfs">
-          <ion-card (click)="openPDF(pdf)">
-            <img [src]="pdf.thumbnail" alt="Miniatura do PDF" />
-            <ion-card-header>
-              <ion-card-title>{{ pdf.title }}</ion-card-title>
-            </ion-card-header>
-            <ion-card-content>
-              <p>{{ pdf.description }}</p>
-            </ion-card-content>
-          </ion-card>
-        </ion-col>
-      </ion-row>
-    </ng-container>
+
+    <ion-icon
+      name="chevron-back-outline"
+      class="goPrev-icon"
+      (click)="backToFolders()"
+      *ngIf="isInsideFolder"
+    ></ion-icon>
+
+    <ion-list *ngIf="selectedFolder; else folderList">
+      <ion-item
+        class="search-item"
+        *ngFor="let pdf of pdfs"
+        (click)="showActionSheet(pdf)"
+      >
+        <ion-thumbnail class="search-thumbnail" slot="start">
+          <img *ngIf="pdf.id; else placeholder" [src]="thumbnails[pdf.id]" />
+          <ng-template #placeholder>
+            <img src="assets/placeholder.png" />
+          </ng-template>
+        </ion-thumbnail>
+        <ion-label class="search-info">
+          <h2 class="search-title">{{ pdf.title }}</h2>
+          <p class="search-description">{{ pdf.description}}</p>
+          <p class="search-user">&#64; {{ userName }}</p>
+          <div class="stars">
+            <ion-icon
+              *ngFor="let star of [1, 2, 3, 4, 5]"
+              [name]="star <= (pdf.userRating || 0) ? 'star' : 'star-outline'"
+              (click)="onRatingChange(pdf.id, star)"
+              color="warning"
+            ></ion-icon>
+          </div>
+        </ion-label>
+      </ion-item>
+    </ion-list>
 
     <ng-template #folderList>
       <ion-icon
@@ -64,7 +79,7 @@
     </ng-template>
   </ion-grid>
 
-  <ion-fab vertical="bottom" horizontal="end" slot="fixed">
+  <ion-fab vertical="bottom" horizontal="end" slot="fixed" *ngIf="activeTooltip">
     <div
       class="tooltip-container"
       [ngClass]="{'show-tooltip': isTooltipVisible}"
