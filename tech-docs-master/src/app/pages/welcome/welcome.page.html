@@ -18,12 +18,17 @@
       <div *ngIf="i !== 0" class="content">
         <p>{{ content[i] }}</p>
       </div>
+
+      <ion-fab
+        vertical="center"
+        horizontal="center"
+        style="margin-bottom: 50px"
+        *ngIf="i === content.length - 1"
+      >
+        <ion-fab-button [routerLink]="['/log-in']">
+          <ion-icon name="chevron-forward"></ion-icon>
+        </ion-fab-button>
+      </ion-fab>
     </swiper-slide>
   </swiper-container>
-
-  <ion-fab vertical="center" horizontal="center" style="margin-bottom: 50px">
-    <ion-fab-button [routerLink]="['/log-in']">
-      <ion-icon name="chevron-forward"></ion-icon>
-    </ion-fab-button>
-  </ion-fab>
 </ion-content>
