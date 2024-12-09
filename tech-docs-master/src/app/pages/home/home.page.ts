@@ -7,7 +7,7 @@ import { ActionSheetController, ModalController } from "@ionic/angular";
 import { ReviewService } from "../../services/review.service";
 import { AngularFireAuth } from "@angular/fire/compat/auth";
 import { FirebaseStorageService } from "../../services/firebase-storage.service";
-import { FolderService } from "../../services/folder.service"; // Novo serviço para pastas
+import { FolderService } from "../../services/folder.service";
 import { Folder } from "src/app/models/folder.model";
 import { AddToFolderPage } from "../add-to-folder/add-to-folder.page";
 @Component({
@@ -23,10 +23,10 @@ export class HomePage implements OnInit {
   description: string = "";
   tags: string = "";
   acceptTerms: boolean = false;
-  selectedFile: File | null = null; // Armazena o arquivo selecionado
-  userName: string | null = null; // Nome do usuário autenticado
-  isFolderModalOpen: boolean = false; // Controle do modal de pastas
-  folders: any[] = []; // Lista de pastas
+  selectedFile: File | null = null;
+  userName: string | null = null;
+  isFolderModalOpen: boolean = false;
+  folders: any[] = [];
 
   constructor(
     private pdfService: PdfService,
@@ -36,15 +36,14 @@ export class HomePage implements OnInit {
     private reviewService: ReviewService,
     private afAuth: AngularFireAuth,
     private firebaseStorageService: FirebaseStorageService,
-    private folderService: FolderService // Serviço de pastas
+    private folderService: FolderService
   ) {}
 
   ngOnInit() {
     this.loadPDFs();
-    this.loadFolders(); // Carregar pastas
+    this.loadFolders();
   }
 
-  // Carregar PDFs
   async loadPDFs() {
     const user = await this.afAuth.currentUser;
     if (user) {
@@ -81,15 +80,13 @@ export class HomePage implements OnInit {
     });
   }
 
-  // Carregar pastas
-  // Carregar pastas
   async loadFolders() {
     const user = await this.afAuth.currentUser;
     if (user) {
       this.folderService.getFoldersByUser(user.uid).subscribe({
         next: (folders: Folder[]) => {
           this.folders = folders;
-          console.log("Pastas carregadas:", this.folders); // Adicione este log
+          console.log("Pastas carregadas:", this.folders);
         },
         error: (error) => {
           console.error("Erro ao carregar pastas:", error);
@@ -98,7 +95,6 @@ export class HomePage implements OnInit {
     }
   }
 
-  // Exibir o Action Sheet com as opções
   async showActionSheet(pdf: Pdf) {
     const actionSheet = await this.actionSheetController.create({
       header: "Escolha uma ação",
@@ -140,7 +136,7 @@ export class HomePage implements OnInit {
   async addToFolder(pdf: Pdf) {
     const modal = await this.modalController.create({
       component: AddToFolderPage,
-      componentProps: { pdf }, // Passa o PDF para o modal
+      componentProps: { pdf },
     });
     await modal.present();
   }
@@ -165,29 +161,29 @@ export class HomePage implements OnInit {
       console.error("Erro ao baixar o PDF:", error);
     }
   }
+
   async onRatingChange(pdfId: string | undefined, newRating: number) {
     const user = await this.afAuth.currentUser;
     if (!user || !pdfId) return;
-  
+
     const review = { pdfId, userId: user.uid, rating: newRating };
     await this.reviewService.addOrUpdateReview(review);
-  
+
     // Atualizar a avaliação localmente
     const pdf = this.pdfs.find((p) => p.id === pdfId);
     if (pdf) {
       pdf.userRating = newRating;
-  
-      // **Forçar a detecção de mudanças**
+
       this.pdfs = [...this.pdfs];
     }
   }
-  
 
   // Funções de upload de PDF
   onFileSelected(event: Event) {
     const input = event.target as HTMLInputElement;
     const file = input.files?.[0];
-    if (file) {      this.selectedFile = file;
+    if (file) {
+      this.selectedFile = file;
     }
   }
 

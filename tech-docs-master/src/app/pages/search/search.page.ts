@@ -2,9 +2,17 @@ import { Component, OnInit } from "@angular/core";
 import { PdfService } from "../../services/pdf.service";
 import { PdfThumbnailService } from "../../services/pdf-thumbnail.service";
 import { Pdf } from "../../models/pdfs.model";
-import { NavController } from "@ionic/angular";
+import {
+  ActionSheetController,
+  ModalController,
+  NavController,
+} from "@ionic/angular";
 import { AngularFireAuth } from "@angular/fire/compat/auth";
 import { ReviewService } from "src/app/services/review.service";
+import { FolderService } from "src/app/services/folder.service";
+import { Folder } from "src/app/models/folder.model";
+import { AddToFolderPage } from "../add-to-folder/add-to-folder.page";
+import { FirebaseStorageService } from "src/app/services/firebase-storage.service";
 
 @Component({
   selector: "app-search",
@@ -13,26 +21,37 @@ import { ReviewService } from "src/app/services/review.service";
 })
 export class SearchPage implements OnInit {
   searchQuery: string = "";
+  selectedFile: File | null = null;
+  title: string = "";
+  description: string = "";
+  tags: string = "";
+  userName: string | null = null;
+  isFolderModalOpen: boolean = false;
+  hasSearched: boolean = false;
   showList: boolean = false;
   results: string[] = [];
   data: string[] = [];
   recentPDFs: Pdf[] = [];
   pdfs: Pdf[] = [];
+  folders: any[] = [];
   thumbnails: { [key: string]: string } = {};
   field: "title" | "tags" = "title";
-  userName: string | null = null;
-  hasSearched: boolean = false;
 
   constructor(
     private pdfService: PdfService,
     private pdfThumbnailService: PdfThumbnailService,
     private navCtrl: NavController,
     private reviewService: ReviewService,
-    private afAuth: AngularFireAuth
+    private afAuth: AngularFireAuth,
+    private folderService: FolderService,
+    private modalController: ModalController,
+    private firebaseStorageService: FirebaseStorageService,
+    private actionSheetController: ActionSheetController
   ) {}
 
   ngOnInit() {
     this.loadRecentPDFs();
+    this.loadFolders();
     this.hasSearched = false;
     this.pdfs = [];
     this.searchQuery = "";
@@ -55,7 +74,6 @@ export class SearchPage implements OnInit {
     this.results = [];
     this.showList = false;
 
-    // Adiciona ao histórico, se necessário
     if (!this.data.includes(item)) {
       this.data.push(item);
     }
@@ -149,16 +167,144 @@ export class SearchPage implements OnInit {
     }
   }
 
+  async loadFolders() {
+    const user = await this.afAuth.currentUser;
+    if (user) {
+      this.folderService.getFoldersByUser(user.uid).subscribe({
+        next: (folders: Folder[]) => {
+          this.folders = folders;
+          console.log("Pastas carregadas:", this.folders);
+        },
+        error: (error) => {
+          console.error("Erro ao carregar pastas:", error);
+        },
+      });
+    }
+  }
+
+  async showActionSheet(pdf: Pdf) {
+    const actionSheet = await this.actionSheetController.create({
+      header: "Escolha uma ação",
+      buttons: [
+        {
+          text: "Adicionar a Pasta",
+          icon: "folder",
+          handler: () => {
+            this.addToFolder(pdf);
+          },
+        },
+        {
+          text: "Abrir PDF",
+          icon: "open",
+          handler: () => {
+            this.openPDF(pdf);
+          },
+        },
+        {
+          text: "Baixar PDF",
+          icon: "download",
+          handler: () => {
+            this.downloadPDF(pdf);
+          },
+        },
+        {
+          text: "Cancelar",
+          icon: "close",
+          role: "cancel",
+          handler: () => {
+            console.log("Cancelado");
+          },
+        },
+      ],
+    });
+    await actionSheet.present();
+  }
+
+  async addToFolder(pdf: Pdf) {
+    const modal = await this.modalController.create({
+      component: AddToFolderPage,
+      componentProps: { pdf },
+    });
+    await modal.present();
+  }
+
+  // Funções de upload de PDF
+  onFileSelected(event: Event) {
+    const input = event.target as HTMLInputElement;
+    const file = input.files?.[0];
+    if (file) {
+      this.selectedFile = file;
+    }
+  }
+
+  async sendPdf() {
+    if (this.selectedFile) {
+      try {
+        this.firebaseStorageService
+          .uploadPDF(this.selectedFile)
+          .subscribe(async (downloadURL) => {
+            console.log("Arquivo enviado com sucesso. URL:", downloadURL);
+
+            const user = await this.afAuth.currentUser;
+            if (!user) {
+              console.error("Usuário não autenticado");
+              return;
+            }
+
+            const pdfData: Pdf = {
+              title: this.title,
+              description: this.description,
+              tags: this.tags.split(",").map((tag) => tag.trim()),
+              user_id: user.uid,
+              upload_date: new Date(),
+              url: downloadURL,
+              download_count: 0,
+              review_count: 0,
+            };
+
+            await this.pdfService.addPDF(pdfData);
+            console.log("Metadados do PDF salvos com sucesso no Firestore.");
+            this.loadRecentPDFs();
+            this.cancel();
+          });
+      } catch (error) {
+        console.error("Erro ao fazer upload do arquivo:", error);
+      }
+    } else {
+      console.error("Nenhum arquivo selecionado.");
+    }
+  }
+
   openPDF(pdf: Pdf) {
     window.open(pdf.url, "_blank");
   }
 
+  async downloadPDF(pdf: Pdf) {
+    try {
+      const response = await fetch(pdf.url);
+      const blob = await response.blob();
+      const link = document.createElement("a");
+      link.href = URL.createObjectURL(blob);
+      link.download = `${pdf.title}.pdf`;
+      link.click();
+    } catch (error) {
+      console.error("Erro ao baixar o PDF:", error);
+    }
+  }
+
+  cancel() {
+    this.title = "";
+    this.description = "";
+    this.tags = "";
+    this.modalController.dismiss();
+  }
+
   backToSearch() {
     this.hasSearched = false;
-    this.pdfs = []; // Limpa os PDFs encontrados na pesquisa
-    this.searchQuery = ""; // Limpa a query de pesquisa
-    this.showList = false; // Opcional: Reseta a lista de sugestões
-    this.results = []; // Limpa os resultados da busca
+    this.pdfs = [];
+    this.searchQuery = "";
+    this.showList = false;
+    this.results = [];
     this.navCtrl.navigateRoot("tabs/tabs/search");
     console.log("Voltando para página de busca");
   }
