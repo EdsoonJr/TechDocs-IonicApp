@@ -1,34 +1,39 @@
-import { Component, Input } from '@angular/core';
-import { ModalController, AlertController } from '@ionic/angular';
-import { FolderService } from '../../services/folder.service';
-import { Pdf } from '../../models/pdfs.model';
-import { AngularFireAuth } from '@angular/fire/compat/auth';
+import { Component, Input } from "@angular/core";
+import {
+  ModalController,
+  AlertController,
+  ToastController,
+} from "@ionic/angular";
+import { FolderService } from "../../services/folder.service";
+import { Pdf } from "../../models/pdfs.model";
+import { AngularFireAuth } from "@angular/fire/compat/auth";
 
 @Component({
-  selector: 'app-add-to-folder',
-  templateUrl: './add-to-folder.page.html',
-  styleUrls: ['./add-to-folder.page.scss'],
+  selector: "app-add-to-folder",
+  templateUrl: "./add-to-folder.page.html",
+  styleUrls: ["./add-to-folder.page.scss"],
 })
 export class AddToFolderPage {
-  @Input() pdf!: Pdf; // PDF recebido
-  folders: any[] = []; // Armazena as pastas do usuário
+  @Input() pdf!: Pdf;
+  folders: any[] = [];
 
   constructor(
-    private modalController: ModalController,
+    private afAuth: AngularFireAuth,
     private folderService: FolderService,
-    private afAuth: AngularFireAuth, // Serviço para autenticação
-    private alertController: AlertController // Serviço para exibir alertas
+    private modalController: ModalController,
+    private toastController: ToastController,
+    private alertController: AlertController
   ) {}
 
   ionViewWillEnter() {
     this.afAuth.authState.subscribe((user) => {
-      if (user && user.uid) { // Certifique-se de que 'user.uid' está definido
-        const userId: string = user.uid; // Agora temos certeza que 'userId' é string
+      if (user && user.uid) {
+        const userId: string = user.uid;
         this.folderService.getFoldersByUser(userId).subscribe((folders) => {
           this.folders = folders;
         });
       } else {
-        console.error('Usuário não autenticado ou UID não disponível.');
+        console.error("Usuário não autenticado ou UID não disponível.");
       }
     });
   }
@@ -38,64 +43,79 @@ export class AddToFolderPage {
   }
 
   addPdfToFolder(folder: any) {
-    if (this.pdf?.id) { // Certifica-se de que o id do PDF está definido
-      this.folderService.addPdfToFolder(folder.id, this.pdf.id).then(() => {
-        console.log('PDF adicionado à pasta:', folder.title);
-        this.dismiss();
-      }).catch((error) => {
-        console.error('Erro ao adicionar PDF:', error);
-      });
+    if (this.pdf?.id) {
+      this.folderService
+        .addPdfToFolder(folder.id, this.pdf.id)
+        .then(() => {
+          this.showToast("Pdf adicionado com sucesso!", "success");
+          console.log("PDF adicionado à pasta:", folder.title);
+          this.dismiss();
+        })
+        .catch((error) => {
+          this.showToast("Erro ao adicionar pdf.", "warning");
+          console.error("Erro ao adicionar PDF:", error);
+        });
     } else {
-      console.error('PDF inválido ou sem ID.');
+      console.error("PDF inválido ou sem ID.");
     }
   }
 
   async createNewFolder() {
     const alert = await this.alertController.create({
-      header: 'Criar nova pasta',
+      header: "Criar nova pasta",
       inputs: [
         {
-          name: 'folderName',
-          type: 'text',
-          placeholder: 'Nome da pasta'
-        }
+          name: "folderName",
+          type: "text",
+          placeholder: "Nome da pasta",
+        },
       ],
       buttons: [
         {
-          text: 'Cancelar',
-          role: 'cancel',
-          cssClass: 'secondary',
+          text: "Cancelar",
+          role: "cancel",
+          cssClass: "secondary",
           handler: () => {
-            console.log('Cancelado');
-          }
+            console.log("Cancelado");
+          },
         },
         {
-          text: 'Criar',
+          text: "Criar",
           handler: async (data) => {
-            const user = await this.afAuth.currentUser; // Obtém o usuário autenticado
+            const user = await this.afAuth.currentUser;
             if (user) {
               const newFolder = {
                 title: data.folderName,
-                userId: user.uid, // Obtém o UID do usuário
+                userId: user.uid,
                 createdAt: new Date(),
-                pdfs: [] // Inicializa com um array vazio para 'pdfs'
+                pdfs: [],
               };
 
               try {
                 await this.folderService.createFolder(newFolder);
-                console.log('Nova pasta criada:', newFolder.title);
-                this.dismiss(); // Fecha o modal
+                console.log("Nova pasta criada:", newFolder.title);
+                this.dismiss();
               } catch (error) {
-                console.error('Erro ao criar pasta:', error);
+                console.error("Erro ao criar pasta:", error);
               }
             } else {
-              console.error('Usuário não autenticado.');
+              console.error("Usuário não autenticado.");
             }
-          }
-        }
-      ]
+          },
+        },
+      ],
     });
 
     await alert.present();
+  }
+
+  async showToast(message: string, color: "success" | "warning") {
+    const toast = await this.toastController.create({
+      message,
+      duration: 2000,
+      position: "bottom",
+      color,
+    });
+    toast.present();
   }
 }

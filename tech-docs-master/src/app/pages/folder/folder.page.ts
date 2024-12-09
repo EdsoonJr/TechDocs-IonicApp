@@ -107,7 +107,7 @@ export class FolderPage implements OnInit {
       header: "Escolha uma ação",
       buttons: [
         {
-          text: "Adicionar a Pasta",
+          text: "Adicionar a outra Pasta",
           icon: "folder",
           handler: () => {
             this.addToFolder(pdf);

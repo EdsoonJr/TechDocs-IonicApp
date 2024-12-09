@@ -15,10 +15,10 @@
       <ion-label>Escolha uma Pasta</ion-label>
     </ion-list-header>
     <ion-item *ngFor="let folder of folders" (click)="addPdfToFolder(folder)">
-      <ion-label>{{ folder.title }}</ion-label>
+      <ion-label class="file-title">{{ folder.title }}</ion-label>
+      <ion-button (click)="addPdfToFolder(folders)"
+        ><ion-icon size="small" name="add-outline" slot="icon-only"></ion-icon
+      ></ion-button>
     </ion-item>
   </ion-list>
-  <ion-button expand="block" color="secondary" (click)="createNewFolder()">
-    Criar Nova Pasta
-  </ion-button>
 </ion-content>
