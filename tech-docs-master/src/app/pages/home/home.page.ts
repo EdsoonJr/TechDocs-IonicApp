@@ -180,9 +180,7 @@ export class HomePage implements OnInit {
   onFileSelected(event: Event) {
     const input = event.target as HTMLInputElement;
     const file = input.files?.[0];
-    if (file) {
-      this.selectedFile = file;
-      this.selectedFile = file;
+    if (file) {      this.selectedFile = file;
     }
   }
 
