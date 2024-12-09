@@ -168,13 +168,20 @@ export class HomePage implements OnInit {
   async onRatingChange(pdfId: string | undefined, newRating: number) {
     const user = await this.afAuth.currentUser;
     if (!user || !pdfId) return;
+  
     const review = { pdfId, userId: user.uid, rating: newRating };
     await this.reviewService.addOrUpdateReview(review);
+  
+    // Atualizar a avaliação localmente
     const pdf = this.pdfs.find((p) => p.id === pdfId);
     if (pdf) {
       pdf.userRating = newRating;
+  
+      // **Forçar a detecção de mudanças**
+      this.pdfs = [...this.pdfs];
     }
   }
+  
 
   // Funções de upload de PDF
   onFileSelected(event: Event) {
