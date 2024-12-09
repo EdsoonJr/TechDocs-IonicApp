@@ -1,4 +1,7 @@
 <ion-content [fullscreen]="true">
+  <ion-img src="../../../assets/images/wallpaper.png"></ion-img>
+  <ion-img src="../../../assets/images/wallpaper.png"></ion-img>
+
   <div class="container">
     <img src="../../../assets/images/app-logo.svg" alt="App Logo" />
     <h1>Bem-Vindo(a), {{ userName }}!</h1>
@@ -62,7 +65,7 @@
             <ion-toolbar>
               <ion-buttons slot="end">
                 <ion-button (click)="cancel()">
-                  <ion-icon name="close-outline"></ion-icon>
+                  <ion-icon slot="icon-only" name="close-outline"></ion-icon>
                 </ion-button>
               </ion-buttons>
               <ion-title>Upload de PDF</ion-title>
@@ -110,7 +113,7 @@
                 [(ngModel)]="acceptTerms"
                 aria-label="Accept Terms"
               ></ion-checkbox>
-              <ion-label>
+              <ion-label class="acceptTerms-label">
                 Ao clicar, aceito os termos da
                 <a href="/privacy-policy">Política de Privacidade</a> e
                 reconheço minha responsabilidade ao fazer o upload deste PDF.

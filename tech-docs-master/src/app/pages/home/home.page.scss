@@ -26,6 +26,24 @@ ion-img {
   object-fit: contain;
 }
 
+ion-img:nth-child(1),
+ion-img:nth-child(2) {
+  width: 250px;
+  position: absolute;
+  z-index: -1;
+}
+
+ion-img:nth-child(1) {
+  right: -20px;
+  top: 0;
+}
+
+ion-img:nth-child(2) {
+  left: -90px;
+  top: 100px;
+  transform: scaleX(-1);
+}
+
 ion-button {
   margin-top: -10px;
 }
@@ -109,11 +127,15 @@ ion-button {
   }
 }
 
+.acceptTerms-label {
+  margin-top: 15px;
+}
+
 .send-btn {
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-top: 80px;
+  margin-top: 50px;
 }
 
 .send-btn ion-button {
