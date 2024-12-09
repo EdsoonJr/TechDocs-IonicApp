@@ -49,6 +49,11 @@
     <p>O que você está procurando?</p>
   </div>
 
+  <div class="noResults" *ngIf="noResultsFound">
+    <img src="../../../assets/images/noFiles.svg" alt="no-files" />
+    <p>Ooops... nenhum arquivo por aqui :(</p>
+  </div>
+
   <ion-list>
     <ion-item class="search-item" *ngFor="let pdf of pdfs">
       <ion-thumbnail class="search-thumbnail" slot="start">

@@ -29,6 +29,7 @@ export class SearchPage implements OnInit {
   isFolderModalOpen: boolean = false;
   hasSearched: boolean = false;
   showList: boolean = false;
+  noResultsFound: boolean = false;
   results: string[] = [];
   data: string[] = [];
   recentPDFs: Pdf[] = [];
@@ -53,6 +54,7 @@ export class SearchPage implements OnInit {
     this.loadRecentPDFs();
     this.loadFolders();
     this.hasSearched = false;
+    this.noResultsFound = false;
     this.pdfs = [];
     this.searchQuery = "";
     this.results = [];
@@ -128,8 +130,13 @@ export class SearchPage implements OnInit {
         this.pdfs = results;
         console.log("Resultados da pesquisa:", results);
         await this.generateThumbnails();
+
+        this.noResultsFound = this.pdfs.length === 0;
       },
-      error: (err) => console.error("Erro ao buscar PDFs:", err),
+      error: (err) => {
+        console.error("Erro ao buscar PDFs:", err);
+        this.noResultsFound = true;
+      },
     });
 
     const user = await this.afAuth.currentUser;
@@ -301,6 +308,7 @@ export class SearchPage implements OnInit {
 
   backToSearch() {
     this.hasSearched = false;
+    this.noResultsFound = false;
     this.pdfs = [];
     this.searchQuery = "";
     this.showList = false;

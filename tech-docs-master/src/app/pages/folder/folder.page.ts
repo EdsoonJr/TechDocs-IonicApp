@@ -25,7 +25,7 @@ export class FolderPage implements OnInit {
   selectedFolder: any = null;
   userName: string | null = null;
   isTooltipVisible: boolean = false;
-  isHammerIcon: boolean = true;
+  isFolderIcon: boolean = true;
   isInsideFolder: boolean = false;
   activeTooltip: boolean = true;
   showNoResults: boolean = false;
@@ -231,7 +231,7 @@ export class FolderPage implements OnInit {
 
   toggleTooltip() {
     this.isTooltipVisible = !this.isTooltipVisible;
-    this.isHammerIcon = !this.isHammerIcon;
+    this.isFolderIcon = !this.isFolderIcon;
   }
 
   @HostListener("document:click", ["$event"])
@@ -242,7 +242,7 @@ export class FolderPage implements OnInit {
     const clickedButton = (event.target as HTMLElement).closest(".add-icon");
     if (!clickedInside && !clickedButton) {
       this.isTooltipVisible = false;
-      this.isHammerIcon = true;
+      this.isFolderIcon = true;
     }
   }
 }
