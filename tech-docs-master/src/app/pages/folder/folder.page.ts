@@ -85,12 +85,11 @@ export class FolderPage implements OnInit {
 
     for (const pdfId of folder.pdfs) {
       const pdf = await this.pdfService.getPdfById(pdfId);
-      if (pdf) {
-        pdf.thumbnail = await this.pdfThumbnailService.generateThumbnail(
-          pdf.url
-        );
+      if (pdf && pdf.id) {
+        const thumbnailUrl = await this.pdfThumbnailService.generateThumbnail(pdf.url);
+        this.thumbnails[pdf.id] = thumbnailUrl;
         this.pdfs.push(pdf);
-      }
+      }  
     }
   }
 
