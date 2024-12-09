@@ -4,7 +4,6 @@
     <h1>Bem-Vindo(a), {{ userName }}</h1>
   </div>
 
-  <!-- Card Sugerido -->
   <ion-card *ngIf="suggestedPdf">
     <ion-card-header>
       <ion-card-title color="primary">Sugerido</ion-card-title>
@@ -12,7 +11,7 @@
     <ion-grid>
       <ion-row>
         <ion-col size="4">
-          <ion-thumbnail class="thumbnail"  (click)="openPDF(suggestedPdf)">
+          <ion-thumbnail class="thumbnail" (click)="openPDF(suggestedPdf)">
             <img [src]="suggestedPdf.thumbnail" alt="Imagem Sugerida" />
           </ion-thumbnail>
         </ion-col>
@@ -20,9 +19,12 @@
           <h2 class="title" color="primary">{{ suggestedPdf.title }}</h2>
           <p class="description">{{ suggestedPdf.description }}</p>
           <div class="stars">
-            <ion-icon *ngFor="let star of [1, 2, 3, 4, 5]"
+            <ion-icon
+              *ngFor="let star of [1, 2, 3, 4, 5]"
               [name]="star <= (suggestedPdf.userRating || 0) ? 'star' : 'star-outline'"
-              (click)="onRatingChange(suggestedPdf.id, star)" color="warning"></ion-icon>
+              (click)="onRatingChange(suggestedPdf.id, star)"
+              color="warning"
+            ></ion-icon>
           </div>
         </ion-col>
       </ion-row>
@@ -31,28 +33,27 @@
 
   <!-- Card Favoritos -->
   <!-- Card Favoritos -->
-<ion-card>
-  <ion-card-header>
-    <ion-card-title color="primary">Favoritos</ion-card-title>
-  </ion-card-header>
-  <ion-grid>
-    <ion-row>
-      <ion-col size="4" *ngFor="let pdf of favoritePDFs">
-        <ion-card (click)="openPDF(pdf)">
-          <ion-thumbnail>
-            <img [src]="pdf.thumbnail" alt="Thumbnail" />
-          </ion-thumbnail>
-          <ion-card-content>
-            <h2 class="title">{{ pdf.title }}</h2>
-            <p class="description">{{ pdf.description }}</p>
-          </ion-card-content>
-        </ion-card>
-      </ion-col>
-    </ion-row>
-  </ion-grid>
-</ion-card>
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title color="primary">Favoritos</ion-card-title>
+    </ion-card-header>
+    <ion-grid>
+      <ion-row>
+        <ion-col size="4" *ngFor="let pdf of favoritePDFs">
+          <ion-card (click)="openPDF(pdf)">
+            <ion-thumbnail>
+              <img [src]="pdf.thumbnail" alt="Thumbnail" />
+            </ion-thumbnail>
+            <ion-card-content>
+              <h2 class="title">{{ pdf.title }}</h2>
+              <p class="description">{{ pdf.description }}</p>
+            </ion-card-content>
+          </ion-card>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </ion-card>
 
-  <!-- Botão Flutuante -->
   <ion-fab vertical="bottom" horizontal="end" slot="fixed">
     <ion-fab-button id="open-modal">
       <ion-icon name="add-outline"></ion-icon>
@@ -87,7 +88,7 @@
                 [(ngModel)]="description"
               ></ion-input>
             </ion-item>
-            <!-- Campo para Tags -->
+
             <ion-item>
               <ion-input
                 label="Tags (separadas por vírgula)"
@@ -127,9 +128,9 @@
                 Enviar
               </ion-button>
             </div>
-          </ion-content>   
+          </ion-content>
         </ng-template>
-      </ion-modal>      
+      </ion-modal>
     </ion-fab-button>
   </ion-fab>
 </ion-content>
